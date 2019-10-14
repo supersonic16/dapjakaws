@@ -25,7 +25,7 @@ SECRET_KEY = '+mlh&%qqa^d7$uf+4&9dt4pe0fe(oc6mffco@r8brm+-dw1vns'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'dapjakaws/templates'),
+            os.path.join(BASE_DIR, 'blog/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
