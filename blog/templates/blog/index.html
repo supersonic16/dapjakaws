@@ -1,1 +1,11 @@
-hello from blog
+{% load staticfiles %}
+<head>
+  <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+{% block body %}
+<body>
+  <div>
+  <p>Hello from hello in red</p>
+  </div>
+</body>
+{% endblock %}
