@@ -81,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dapjakdbaws',
-        'USER': 'my',
+        'USER': 'admin',
         'PASSWORD': 'malecode',
         'HOST': 'ec2-13-233-206-184.ap-south-1.compute.amazonaws.com',
         'PORT': '3306',
