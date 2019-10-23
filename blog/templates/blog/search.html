@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block body %}
+{% load static from staticfiles %}
+
+  <div class="container pt-4 pb-5">
+      {% for posts in posts %}
+    <div class="container-fluid">
+      <div class="row">
+      <div class="col-lg-8 col-md-12 col-12 m-0 p-0">
+      <div class="container-fluid bg-white pt-3 border border-dark">
+      <!-- Jumbotron -->
+        <div class="containers">
+            <h1 class="h1">
+            {{ posts.heading }}
+            </h1><br>
+            <img src="{{ posts.jumbotron.url }}" class="img-fluid" height="100%" width="100%">
+        </div>
+          <br>
+          <div class="row py-2">
+            <div class="col-md-2">
+              <blockquote class="blockquote text-right">
+              <footer class="blockquote-footer"><small>{{ posts.author }}</small></footer>
+              </blockquote>
+            </div>
+            <div class="col-md-10">
+            <p class="text-justify">{{ posts.content }}</p>
+            </div>
+          </div>
+
+      </div>
+
+
+    </div>
+
+</div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

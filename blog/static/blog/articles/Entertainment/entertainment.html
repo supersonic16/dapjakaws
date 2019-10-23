@@ -1,0 +1,81 @@
+{% include "base.html" %}
+{% block header %}
+{% endblock %}
+{% block body %}
+{% load static from staticfiles %}
+<body>
+  <div class="container py-4">
+    <div class="container-fluid">
+      <div class="row">
+
+
+    <div class="col-lg-8 col-md-12 col-12 m-0 p-0">
+      <div class="container-fluid bg-white pt-3">
+      <!-- Jumbotron -->
+        <div class="container  ">
+            <h1 class="h1">
+            Rahul Bose is <span class="text-primary">#GoingBananas</span> over bananas.
+            </h1><br>
+            <img src="{% static 'blog/images/rahulbose.jpg' %}" class="img-fluid" height="100%" width="100%">
+        </div>
+          <br>
+          <div class="row py-2">
+            <div class="col-md-2">
+              <blockquote class="blockquote text-right">
+              <footer class="blockquote-footer"><small>by Sanchit Gupta</small></footer>
+              </blockquote>
+            </div>
+            <div class="col-md-10">
+            <p class="text-justify">{% include 'articles/Entertainment/1.html' %}</p>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+      <div class="row">
+        <!-- side reader 1 -->
+      <div class="container customClass1 pb-3">
+
+          <div class="bg-white">
+            <img src="{% static 'blog/images/sophie_joe.webp' %}" class="img-fluid" height="100%" width="100%">
+
+          <div class="sidebar-box">
+          <h5 class="h5 px-2 py-0">Sophie Turner and Joe Jonas's dog Waldo died in an car accident </h5>
+          <p class="px-2 pt-0">
+            {% include 'articles/Entertainment/2.html' %}
+          </p>
+          <p class="read-more"><a href="#">Read More</a></p>
+          </div>
+
+          </div>
+      </div>
+        <!-- side reader 2 -->
+        <div class="container customClass2 pb-3">
+
+            <div class="bg-white">
+              <img src="{% static 'blog/images/family_bali.webp' %}" class="img-fluid" height="100%" width="100%">
+
+            <div class="sidebar-box">
+            <h5 class="h5 px-2 py-0">Indian family caught by staff after stealing accessories from a hotel in Bali</h5>
+            <p class="px-2 pt-0">
+              {% include 'articles/Entertainment/3.html' %}
+            </p>
+            <p class="read-more"><a href="#" class="button">Read More</a></p>
+            </div>
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+
+
+
+{% endblock %}
+{% block footer %}
+{% include "baseFooter.html" %}
+{% endblock %}

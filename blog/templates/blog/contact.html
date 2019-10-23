@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container top-aboutus">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-primary text-white"><i class="fa fa-envelope"></i> Contact us.
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                      {% csrf_token %}
+                      {{ form.name }}
+                      {{ form.email }}
+
+                      {{ form.message }}
+                        <button type="submit" class="btn btn-primary text-right">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header bg-success text-white text-uppercase"><i class="fa fa-home"></i>Email Address</div>
+                <div class="card-body">
+                  <p>Email : flypfeed@gmail.com</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

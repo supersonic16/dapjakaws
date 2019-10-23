@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ posts.heading }}
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block body %}
+{% load static from staticfiles %}
+<body>
+  <div class="container pt-4 pb-5">
+    <div class="container-fluid">
+      <div class="row">
+      <div class="col-lg-8 col-md-12 col-12 m-0 p-0">
+      <div class="container-fluid bg-white pt-3 border border-dark">
+      <!-- Jumbotron -->
+        <div class="containers">
+            <h1 class="h1">
+            <!-- Rahul Bose is <span class="text-primary">#GoingBananas</span> over bananas. -->
+            {{ posts.heading }}
+            </h1><br>
+            <img src="{{ posts.jumbotron.url }}" class="img-fluid" height="100%" width="100%">
+        </div>
+          <br>
+          <div class="row py-2">
+            <div class="col-md-2">
+              <blockquote class="blockquote text-right">
+              <footer class="blockquote-footer"><small>{{ posts.author }}</small></footer>
+              </blockquote>
+            </div>
+            <div class="col-md-10">
+            <p class="text-justify">{{ posts.content }}</p>
+            <a href="{{ posts.source }}" class="text-dark">Source</a>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+      <div class="row">
+      <div class="container">
+
+        {% for post in post %}
+        
+          {% if post.id != posts.id %}
+
+          <div class="mb-4 ml-4 border border-dark">
+            <img src="{{ post.jumbotron.url }}" class="img-fluid" height="100%" width="100%">
+            <div class="sidebar-box bg-white border-dark">
+            <h5 class="h5 px-2 py-0">{{ post.heading }}</h5>
+            <p class="px-2 pt-0">{{ post.content }}</p>
+            <p class="read-more"><a href="{% url 'blog:entertainment' post.id %}">Read More</a></p>
+          </div>
+            {% endif %}
+        </div>
+
+        {% endfor %}
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+{% endblock %}
