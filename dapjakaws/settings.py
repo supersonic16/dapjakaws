@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'dapjakaws.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog2',
+        'NAME': 'dapjakdbaws',
         'USER': 'my',
         'PASSWORD': 'malecode',
         'HOST': 'ec2-13-233-206-184.ap-south-1.compute.amazonaws.com',
