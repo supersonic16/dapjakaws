@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'dapjakdbaws',
         'USER': 'admin',
         'PASSWORD': 'malecode',
-        'HOST': 'ec2-13-233-206-184.ap-south-1.compute.amazonaws.com',
+        'HOST': 'dapjakawsdb.co1w3ezac719.ap-south-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
