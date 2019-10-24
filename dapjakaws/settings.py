@@ -79,12 +79,12 @@ WSGI_APPLICATION = 'dapjakaws.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dapjakdbaws',
-        'USER': 'admin',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dapjakdb1',
+        'USER': 'postgres',
         'PASSWORD': 'malecode',
-        'HOST': 'dapjakawsdb.co1w3ezac719.ap-south-1.rds.amazonaws.com',
-        'PORT': '3306',
+        'HOST': 'dapjakdb1.co1w3ezac719.ap-south-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
