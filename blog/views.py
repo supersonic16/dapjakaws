@@ -15,7 +15,7 @@ class Indexview(TemplateView):
 
 
 
-def search(request,id=5):
+def search(request,id=1):
     query=request.GET.get("q")
     post=EntertainmentModel.objects.all()
     posts=get_object_or_404(EntertainmentModel,id=id)
