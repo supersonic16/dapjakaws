@@ -15,5 +15,5 @@ class EntertainmentModel(models.Model):
     heading=models.CharField(max_length=100)
     content=models.TextField(max_length=500)
     author=models.TextField(max_length=100,default="Sanchit Gupta")
-    jumbotron=models.ImageField(upload_to= 'static/', default="no image")
+    jumbotron=models.ImageField(upload_to= 'jumbotron', default="no image")
     source=models.URLField(max_length=200,default="Not available")
