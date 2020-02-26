@@ -9,38 +9,50 @@ a:hover{
   color: #404040;
 }
 body{
-  background-color: #e3dfdb;
+  background-color: #F6F8FA;
   padding-top: 60px;
   font-weight: normal;
 }
 .h1{
   margin: inherit;
 }
-
+.border-custom {
+  border-color: #C8C8C8	 !important;
+}
 /* about us */
 .top-aboutus{
   padding-top: 30px;
   padding-bottom: 55px;
 }
 /* header */
+.loginNav{
+  float: left;
+}
 .navbar{
   padding: 0px 5px 0px 5px;
 }
 .navbar-nav .nav-item .nav-link {
   color: white;
   padding-left: 1rem;
+  margin-top: 5px;
 }
 .navbar-brand{
   font-weight: 800;
   font-size: 22px;
   }
-#fa1{
-  text-align: left;
-  font-size: 20px;
+.formNavBar{
+  margin-left: 10px;
+}
+#searchText{
   padding: 10px;
-  width: 50px;
-  text-decoration: none;
-  margin: 0px 0px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+#searchText::placeholder{
+  font-size: 14px;
 }
 /* #form1{
   display: none;
@@ -85,7 +97,27 @@ body{
   text-decoration: none;
   margin: 5px 2px;
 }
-
+.fa2{
+  position: relative;
+  margin-top: 5px;
+  display:flex;
+  font:normal normal normal 14px/1 FontAwesome;
+  font-size:inherit;
+  text-rendering:auto;
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #000;
+  color: white;
+  font-size: 17px;
+  border: 0px solid;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  align-content: center;
+  justify-content: center;
+  vertical-align: middle;
+}
 
 /* media queries */
 @media (min-width:320px)

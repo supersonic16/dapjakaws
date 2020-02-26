@@ -40,14 +40,25 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Travel</a>
               </li>
+              <li class="nav-item formNavBar">
+                <div class="ml-auto">
+                  <form action="{% url 'blog:search' %}" method="GET">
+                    <input type="text" id="searchText" name="q" value="{{ request.GET.q }}" placeholder=" Search DapJak" />
+                    <button type="submit" class="fa2 fa-search" id="searchButton" onclick="showSearch()"></button>
+                  </form>
+                </div>
+              </li>
             </ul>
           </div>
-        <div class="ml-auto">
-          <form action="{% url 'blog:search' %}" method="GET">
-            <input type="text" name="q" value="{{ request.GET.q }}" placeholder=" Search..." />
-            <button type="submit" class="btn btn-outline-light" onclick="showSearch1()">Search</button>
-          </form>
-        </div>
+          <div class="ml-auto">
+            {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="nav-item nav-link loginNav">Profile</a>
+            <a href="{% url 'logout' %}" class="nav-item nav-link loginNav">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-item nav-link loginNav">Login</a>
+            <a href="{% url 'register' %}" class="nav-item nav-link loginNav">Register</a>
+            {% endif %}
+          </div>
 
       </nav>
     </header>
@@ -57,6 +68,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <script src="{% static 'blog/js.js' %}" type="text/javascript"></script>
 <body>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
 {% block body %}
 {% endblock %}
 </body>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+  <article class="media content-section">
+
+      <h2 class="article-title">{{ object.title }}</h2>
+      <p class="article-content">{{ object.content }}</p>
+      <p>{{ object.author }}</p>
+  </article>
+{% endblock %}
