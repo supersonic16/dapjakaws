@@ -5,7 +5,7 @@
 {% block header %}
 {% endblock %}
 {% block body %}
-{% load static from staticfiles %}
+{% load static from static %}
 <body>
   <div class="container pt-4 pb-5">
     <div class="container-fluid">
@@ -40,7 +40,7 @@
       <div class="container">
 
         {% for post in post %}
-        
+
           {% if post.id != posts.id %}
 
           <div class="mb-4 ml-4 border border-dark">

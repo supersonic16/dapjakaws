@@ -18,12 +18,13 @@ from django.urls import path
 from django.conf.urls import url, include
 from users import views as user_views
 from django.contrib.auth import views as auth_views
-
+from users.forms import UserLoginForm
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('register/', user_views.RegisterView.as_view(), name='register'),
     path('profile/', user_views.profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name="users/login.html", authentication_form=UserLoginForm), name='login'),
+    # path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('password-reset/',
         auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'),

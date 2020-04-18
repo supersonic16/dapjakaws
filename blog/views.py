@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -9,33 +10,29 @@ from .models import *
 # Create your views here.
 class Indexview(TemplateView):
     template_name='blog/index.html'
-    def get(self,request,id=1):
-        post=EntertainmentModel.objects.all()
-        posts=get_object_or_404(EntertainmentModel,id=id)
-        args={'posts':posts, 'post':post,'id':id }
+    def get(self,request):
+        post=Post.objects.all().order_by('-date_posted')
+        posts=Post.objects.filter(author = 1)
+        args={'posts':posts, 'post':post}
         return render(request, self.template_name, args)
 
 
 class Searchview(TemplateView):
     """docstring forSearchview."""
 
-    def get(self, request, id=1):
+    def get(self, request):
         query=request.GET.get("q")
-        post=EntertainmentModel.objects.all()
-        posts=get_object_or_404(EntertainmentModel,id=id)
+        post=Post.objects.all()
 
         if query:
             post=post.filter(
             Q(content__icontains=query)|
-            Q(heading__icontains=query)|
+            Q(title__icontains=query)|
             Q(author__icontains=query)
             ).distinct()
-
-            args={'posts':post,'id':id }
-            return render(request, 'blog/search.html', args)
+            return render(request, 'blog/search.html', {'posts':post})
         else:
-            args={'posts':posts,'post':post,'id':id }
-            return render(request, 'blog/index.html',args)
+            return render(request, 'blog/index.html', {'posts':post})
 
 def aboutus(request):
     return render(request, 'blog/aboutus.html')
@@ -81,17 +78,36 @@ class Nameview(TemplateView):
 
         return render(request, self.template_name, args)
 
+# class Entertainmentview(TemplateView):
+#     def get(self, request):
+#         form = PostCreateForm()
+#         args={'form': form}
+#         return render(request, 'blog/new_post.html', args)
+#
+#     def post(self, request):
+#         if request.method == 'POST':
+#             form = PostCreateForm(request.POST, request.FILES)
+#
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, f'Your post has been recorded.')
+#                 return redirect('blog:index')
+#         else:
+#             form = PostCreateForm()
+#
+#         args={'form': form}
+#         return render(request, 'blog/new_post.html', args)
 class Entertainmentview(TemplateView):
     template_name='blog/entertainment.html'
-
-    def get(self,request,id=1):
-        post=EntertainmentModel.objects.all()
-        posts=get_object_or_404(EntertainmentModel,id=id)
-        args={'posts':posts, 'post':post,'id':id }
+    def get(self,request,id=14):
+        post=Post.objects.all().order_by('-date_posted')
+        posts=get_object_or_404(Post,id=id)
+        args={'posts':posts, 'post':post,'id':id}
         return render(request, self.template_name, args)
 
+
 class NewsView(ListView):
-    model = NewsModel
+    model = Post
     template_name='blog/news.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
@@ -103,28 +119,26 @@ class HomeView(ListView):
     ordering=['-date_posted']
     paginate_by = 2
 
-class PostListView(ListView):
-    model = Post
-    template_name = 'blog/index.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
 
 class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
-    paginate_by = 2
 
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+    def get(self, request, username="my123456"):
+        user = get_object_or_404(User, username=username)
+        post = Post.objects.filter(author=user).order_by('-date_posted')
+        count = Post.objects.filter(author=user).count()
+        args={'posts': post, 'user': user, 'count': count}
+        return render(request, self.template_name,args)
 
 class PostDetailView(DetailView):
     model = Post
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
+
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -132,7 +146,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -147,7 +161,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = '/entertainment'
+    success_url = '/'
     def test_func(self):
         post = self.get_object()
 

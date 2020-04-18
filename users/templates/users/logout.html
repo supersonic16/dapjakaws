@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block body %}
-  <h2>You have been logged out.</h2>
-  <a href="{% url 'login' %}">Click here</a><p>to login again.</p>
+<div class="container top-aboutus">
+  <div class="bg-white py-5">
+    <div class="col-md-6 px-5">
+      <h2 class="h2">You have been logged out.</h2>
+      <p class="pt-2"><a href="{% url 'login' %}" class="text-primary"><u>Click here</u></a> to login again.</p>
+
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}

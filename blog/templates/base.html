@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="-1" />
     <title>{% block title %}DapJak{% endblock %}</title>
-    {% load static from staticfiles %}
+    {% load static from static %}
     <link rel="stylesheet" type="text/css" href="{% static 'blog/bootstrap.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
@@ -18,12 +18,32 @@
   <!-- header starts here -->
 
     <header class="header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" id="topNav">
+        <button class="navbar-toggler" type="button" id="collapseButton" data-toggle="collapse" data-target="#navbarToggler">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand mr-auto" href="{% url 'blog:index' %}">DapJak</a>
-          <div class="collapse navbar-collapse" id="navbarToggler">
+          <a class="navbar-brand mr-auto pl-2" id="navbrand" href="{% url 'blog:index' %}">DapJak</a>
+
+          <div class="order-md-2 order-lg-2">
+            <a href="{% url "blog:post-create" %}"><i class="fas fa-plus"></i></a>
+
+            {% if user.is_authenticated %}
+            <button style="background: none; border: none;" id="dropdownMenuButton" data-toggle="dropdown">
+              <img class="rounded-circle nav-article-img m-2" src="{{ request.user.profile.image.url }}">
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <ul class="m-0 p-0 border-bottom"><a href="{% url "blog:user-posts" request.user.username %}" class="dropdown-item">{{ request.user }}</a></ul>
+              <ul class="m-0 p-0"><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></ul>
+              <ul class="m-0 p-0"><a href="{% url 'logout' %}" class="dropdown-item">Logout</a></ul>
+              {% else %}
+                  <a class="btn btn-dark m-2 text-white" href="{% url 'login' %}">Sign in</a>
+                {% endif %}
+            </div>
+          </div>
+
+
+
+          <div class="collapse navbar-collapse order-md-1 order-lg-1" id="navbarToggler">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="#">News</a>
@@ -40,25 +60,24 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Travel</a>
               </li>
-              <li class="nav-item formNavBar">
-                <div class="ml-auto">
-                  <form action="{% url 'blog:search' %}" method="GET">
-                    <input type="text" id="searchText" name="q" value="{{ request.GET.q }}" placeholder=" Search DapJak" />
-                    <button type="submit" class="fa2 fa-search" id="searchButton" onclick="showSearch()"></button>
-                  </form>
-                </div>
-              </li>
+
             </ul>
+          <div class="input-group flex-box" id="mydiv">
+            <form action="{% url 'blog:search' %}" method="GET" id="myForm">
+               <div class="input-group">
+                <input type="text" id="searchText" class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Search DapJak"/>
+                <span class="input-group-append"><button type="submit" id="searchButton" style="background: none; border: none;" onclick="showSearch()"><i class="pl-1 pr-2 fas fa-search"></i></button>
+               </span>
+              </div>
+          </form>
           </div>
-          <div class="ml-auto">
-            {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}" class="nav-item nav-link loginNav">Profile</a>
-            <a href="{% url 'logout' %}" class="nav-item nav-link loginNav">Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="nav-item nav-link loginNav">Login</a>
-            <a href="{% url 'register' %}" class="nav-item nav-link loginNav">Register</a>
-            {% endif %}
+
+
+
           </div>
+
+
+
 
       </nav>
     </header>
@@ -66,6 +85,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/dabe8d8ab2.js" crossorigin="anonymous"></script>
 <script src="{% static 'blog/js.js' %}" type="text/javascript"></script>
 <body>
   {% if messages %}
