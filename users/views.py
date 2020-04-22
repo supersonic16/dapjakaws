@@ -4,6 +4,9 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+
 
 class RegisterView(TemplateView):
     def get(self,request):
@@ -18,6 +21,20 @@ class RegisterView(TemplateView):
             return redirect('login')
         else:
             return render(request, 'users/register.html', {'form':form})
+
+def validate_username(request):
+    username = request.GET.get('username', None)
+    result = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(result)
+
+def check_email(request):
+    email = request.GET.get('email', None)
+    result = {
+        'is_taken' : User.objects.filter(email__iexact=email).exists()
+    }
+    return JsonResponse(result)
 
 @login_required
 def profile(request):

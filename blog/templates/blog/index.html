@@ -26,7 +26,11 @@
           <div class="row py-2">
             <div class="col-md-2">
               <blockquote class="blockquote text-right">
-              <a class="blockquote-footer" href="{% url 'blog:user-posts' user.username %}"><small>{{ posts.author }}</small></a>
+              {% if request.user.is_authenticated %}
+                <a class="blockquote-footer" href="{% url 'blog:user-posts' request.user.username %}"><small>{{ posts.author }}</small></a>
+              {% else %}
+                <a class="blockquote-footer" href="{% url 'blog:user-posts' username="my" %}"><small>{{ posts.author }}</small></a>
+              {% endif %}
               <p style="margin-top: -10px;"><small class="text-muted" style="font-size: 13px;">{{ posts.date_posted|date:"M d" }}</small></p>
               </blockquote>
             </div>
@@ -44,7 +48,7 @@
               <ul class="m-0 p-0"><a href="{% url 'blog:post-delete' posts.id %}" class="dropdown-item">Delete</a></ul>
               {% else %}
               <ul class="m-0 p-0"><a href="" class="dropdown-item">Hide Article</a></ul>
-              <ul class="m-0 p-0"><a href="" class="dropdown-item">Report User</a></ul>
+              <ul class="m-0 p-0"><a href="" class="id_reportuser dropdown-item" id="{{ posts.author.email }}">Report User</a></ul>
             {% endif %}
             </div>
             </div>
@@ -59,7 +63,7 @@
         <div class="container-fluid pt-3 border-bottom mb-2">
              <h3>Latest from your Network</h3>
         </div>
-            {% for post in post|slice:":5" %}
+      {% for post in post|slice:":5" %}
 
        <div class="row m-auto p-2">
          <div class="col-4 pl-4">
@@ -76,6 +80,28 @@
     </div>
   </div>
 </div>
+
+{% block javascript %}
+  <script type="text/javascript">
+    $(".id_reportuser").click(function(event){
+      var report_email=$(this).attr('id');
+      event.preventDefault();
+    $.ajax({
+      url: {% url 'blog:reportuser' %},
+      dataType:  'json',
+      data: {
+        'report_email': report_email,
+        'from_email': '{{ user.email }}'
+      },
+      success: function(result){
+        alert(result.from_email)
+        }
+      })
+
+    })
+  </script>
+{% endblock %}
+
 </body>
 
 {% endblock %}

@@ -15,6 +15,12 @@ function hidepost(n){
 }
 /* jquery code */
 $(document).ready(function(){
+  if ($(window).width() < 768){
+    $("#navbrand").removeClass("pl-2");
+  }
+  else{
+    $("#searchText").hide();
+  }
   $("#searchButton").click(function(){
     var searchText= document.getElementById("searchText");
     if (searchText.value == false){
@@ -30,6 +36,9 @@ $(document).ready(function(){
       searchText.value = "";
     }
   });
+  $(window).click(function(){
+
+  })
   $(window).resize(function(){
       if ($(window).width() < 768){
         $("#mydiv").removeClass("input-group flex-box");
@@ -46,6 +55,5 @@ $(document).ready(function(){
       $("nav").removeClass("fixed-top");
       $("#topNav").addClass("scrollTop");
   });
-
 
 });

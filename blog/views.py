@@ -1,9 +1,13 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.core.mail import BadHeaderError, send_mail
+from django.template import Context
 from django.db.models import Q
 from .forms import *
 from .models import *
@@ -111,13 +115,13 @@ class NewsView(ListView):
     template_name='blog/news.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-
-class HomeView(ListView):
-    model = Post
-    template_name='blog/home.html'
-    context_object_name='posts'
-    ordering=['-date_posted']
-    paginate_by = 2
+#
+# class HomeView(ListView):
+#     model = Post
+#     template_name='blog/home.html'
+#     context_object_name='posts'
+#     ordering=['-date_posted']
+#     paginate_by = 2
 
 
 class UserPostListView(ListView):
@@ -168,3 +172,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
+
+
+def reportuser(request):
+    from_email = request.GET.get('from_email', None)
+    report_email = request.GET.get('report_email', None)
+    send_mail('Report User '+report_email, 'Hi! I would like to report the user.', from_email , ['iammattcaffery@gmail.com',])
+    return JsonResponse({"from_email": report_email})

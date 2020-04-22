@@ -52,7 +52,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     hashtag = models.IntegerField(choices=hashtag.choices, default = 1)
-
+    hideornot=models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
