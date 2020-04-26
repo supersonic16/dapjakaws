@@ -27,7 +27,7 @@
             <div class="col-md-2">
               <blockquote class="blockquote text-right">
               {% if request.user.is_authenticated %}
-                <a class="blockquote-footer" href="{% url 'blog:user-posts' request.user.username %}"><small>{{ posts.author }}</small></a>
+                <a class="blockquote-footer" href="{% url 'blog:user-posts' posts.author %}"><small>{{ posts.author }}</small></a>
               {% else %}
                 <a class="blockquote-footer" href="{% url 'blog:user-posts' username="my" %}"><small>{{ posts.author }}</small></a>
               {% endif %}
@@ -47,8 +47,7 @@
               <ul class="m-0 p-0"><a href="{% url 'blog:post-update' posts.id %}" class="dropdown-item">Update</a></ul>
               <ul class="m-0 p-0"><a href="{% url 'blog:post-delete' posts.id %}" class="dropdown-item">Delete</a></ul>
               {% else %}
-              <ul class="m-0 p-0"><a href="" class="dropdown-item">Hide Article</a></ul>
-              <ul class="m-0 p-0"><a href="" class="id_reportuser dropdown-item" id="{{ posts.author.email }}">Report User</a></ul>
+              <ul class="m-0 p-0"><a href="" class="class_reportuser dropdown-item" id="{{ posts.id }}">Report Article</a></ul>
             {% endif %}
             </div>
             </div>
@@ -83,22 +82,25 @@
 
 {% block javascript %}
   <script type="text/javascript">
-    $(".id_reportuser").click(function(event){
-      var report_email=$(this).attr('id');
-      event.preventDefault();
+  $(".class_reportuser").click(function(event){
+      var report_id=$(this).attr('id');
+      var from_email = '{{ user.email }}';
     $.ajax({
       url: {% url 'blog:reportuser' %},
       dataType:  'json',
       data: {
-        'report_email': report_email,
-        'from_email': '{{ user.email }}'
+        'report_id': report_id,
+        'from_email': from_email
       },
       success: function(result){
-        alert(result.from_email)
+        alert(result.message);
+        if(result.login == 'f'){
+        window.location.href = "/login";
+          }
         }
       })
 
-    })
+  })
   </script>
 {% endblock %}
 

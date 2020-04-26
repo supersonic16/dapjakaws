@@ -6,7 +6,7 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-
+from .models import *
 
 class RegisterView(TemplateView):
     def get(self,request):
@@ -22,6 +22,7 @@ class RegisterView(TemplateView):
         else:
             return render(request, 'users/register.html', {'form':form})
 
+# To return whether the same username exists or not.
 def validate_username(request):
     username = request.GET.get('username', None)
     result = {
@@ -29,12 +30,18 @@ def validate_username(request):
     }
     return JsonResponse(result)
 
+# To check whether the email exists or not in the Database.
 def check_email(request):
     email = request.GET.get('email', None)
     result = {
         'is_taken' : User.objects.filter(email__iexact=email).exists()
     }
     return JsonResponse(result)
+
+#To increase the followers of the user.
+def followuser{
+    
+}
 
 @login_required
 def profile(request):

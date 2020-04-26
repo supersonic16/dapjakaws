@@ -40,5 +40,6 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
         name='password_reset_complete'),
     path('check-email/', user_views.check_email, name="check_email"),
+    path('followuser/', user_views.followuser, name="followuser"),
     path('', include('blog.urls')),
 ]

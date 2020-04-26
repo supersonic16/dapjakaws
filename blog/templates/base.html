@@ -18,13 +18,13 @@
   <!-- header starts here -->
 
     <header class="header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" id="topNav">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="topNav">
         <button class="navbar-toggler" type="button" id="collapseButton" data-toggle="collapse" data-target="#navbarToggler">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand mr-auto pl-2" id="navbrand" href="{% url 'blog:index' %}">DapJak</a>
+          <a class="navbar-brand pl-2" id="navbrand" href="{% url 'blog:index' %}">DapJak</a>
 
-          <div class="order-md-2 order-lg-2">
+          <div class="order-lg-2">
             <a href="{% url "blog:post-create" %}"><i class="fas fa-plus"></i></a>
 
             {% if request.user.is_authenticated %}
@@ -36,14 +36,14 @@
               <ul class="m-0 p-0"><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></ul>
               <ul class="m-0 p-0"><a href="{% url 'logout' %}" class="dropdown-item">Logout</a></ul>
               {% else %}
-                  <a class="btn btn-dark m-2 text-white" href="{% url 'login' %}">Sign in</a>
+                  <a class="btn btn-dark mx-2 text-white" style="margin-top: 10px; margin-bottom: 10px;" href="{% url 'login' %}">Sign in</a>
                 {% endif %}
             </div>
           </div>
 
 
 
-          <div class="collapse navbar-collapse order-md-1 order-lg-1" id="navbarToggler">
+          <div class="collapse navbar-collapse order-lg-1" id="navbarToggler">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="#">News</a>
@@ -65,8 +65,8 @@
           <div class="input-group flex-box" id="mydiv">
             <form action="{% url 'blog:search' %}" method="GET" id="myForm">
                <div class="input-group">
-                <input type="text" id="searchText" class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Search DapJak"/>
-                <span class="input-group-append"><button type="submit" id="searchButton" style="background: none; border: none;" onclick="showSearch()"><i class="pl-1 pr-2 fas fa-search"></i></button>
+                <input type="text" id="searchText" class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Search DapJak">
+                <span class="input-group-append"><button type="submit" id="searchButton" style="background: none; border: none;"><i class="pl-1 pr-2 fas fa-search"></i></button>
                </span>
               </div>
           </form>

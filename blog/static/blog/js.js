@@ -1,25 +1,16 @@
-function showSearch(){
-  var searchText= document.getElementById("searchText")
-  var searchButton= document.getElementById("searchButton")
-
-}
-function hidepost(n){
-  console.log(n);
-  var a = '#'+n;
-  console.log(a);
-  $("#hidebutton").submit(function(event){
-    event.preventDefault();
-  });
-  $("a").hide();
-
-}
 /* jquery code */
 $(document).ready(function(){
-  if ($(window).width() < 768){
+
+  if ($(window).width() < 992){
     $("#navbrand").removeClass("pl-2");
+    $("#myForm").addClass("w-100");
+
+  }
+  else if (searchText.value == false){
+    $("#searchText").hide();
   }
   else{
-    $("#searchText").hide();
+      $("#searchText").show();
   }
   $("#searchButton").click(function(){
     var searchText= document.getElementById("searchText");
@@ -27,26 +18,26 @@ $(document).ready(function(){
       $("#searchText").toggle();
       $("#myForm").submit(function(event){
         event.preventDefault();
-
       });
     }
     else {
       $("#myForm").unbind('submit');
       $("#searchText").show();
-      searchText.value = "";
     }
   });
   $(window).click(function(){
 
   })
   $(window).resize(function(){
-      if ($(window).width() < 768){
+      if ($(window).width() < 992){
         $("#mydiv").removeClass("input-group flex-box");
         $("#navbrand").removeClass("pl-2");
+        $("#myForm").addClass("w-100");
       }
       else{
         $("#mydiv").addClass("input-group flex-box");
         $("#navbrand").addClass("pl-2");
+        $("#myForm").removeClass("w-100");
       }
   });
 

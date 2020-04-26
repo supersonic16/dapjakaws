@@ -88,7 +88,7 @@ body{
 #searchText{
   padding: 5px;
   font-size: 14px;
-  float: left;
+  float: right;
   border-radius: 2px;
   /* width: 100%; */
   background: #282828;
@@ -307,7 +307,6 @@ ul.twPc-Arrange {
       padding: 10px;
       }
       #searchText{
-        display: inline;
         margin-bottom: 5px;
       }
     }
@@ -318,7 +317,6 @@ ul.twPc-Arrange {
      padding: 10px;
      }
      #searchText{
-       display: inline;
       margin-bottom: 5px;
      }
     }
@@ -328,7 +326,6 @@ ul.twPc-Arrange {
     padding: 10px;
   }
   #searchText{
-    display: inline;
     margin-bottom: 5px;
   }
 }
@@ -342,8 +339,7 @@ ul.twPc-Arrange {
      padding-left: 20px;
       }
       #searchText{
-          display: none;
-          margin-bottom: 0px;
+          margin-bottom: 5px;
          }
     }
 @media (min-width:961px)
@@ -364,9 +360,9 @@ ul.twPc-Arrange {
         padding-left: 1rem;
       }
       #searchText{
-          display: none;
-          margin-bottom: 0px;
+          margin-bottom: 5px;
          }
+
   }
 @media (min-width:1025px)
 { /* big landscape tablets, laptops, and desktops */
@@ -385,7 +381,6 @@ ul.twPc-Arrange {
       padding-left: 1rem;
     }
     #searchText{
-        display: none;
         margin-bottom: 0px;
        }
 

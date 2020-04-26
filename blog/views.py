@@ -15,28 +15,25 @@ from .models import *
 class Indexview(TemplateView):
     template_name='blog/index.html'
     def get(self,request):
+        criterion1=Q(author = 1)
+        # criterion2=Q(hideornot=False)
         post=Post.objects.all().order_by('-date_posted')
-        posts=Post.objects.filter(author = 1)
+        posts=Post.objects.filter(criterion1)
         args={'posts':posts, 'post':post}
         return render(request, self.template_name, args)
 
+def search(request):
+    query=request.GET.get("q")
+    post=Post.objects.all()
 
-class Searchview(TemplateView):
-    """docstring forSearchview."""
+    post=post.filter(
+        Q(content__icontains=query)|
+        Q(title__icontains=query)|
+        Q(sub_title__icontains=query)|
+        Q(author__username__icontains=query)
+        ).distinct()
 
-    def get(self, request):
-        query=request.GET.get("q")
-        post=Post.objects.all()
-
-        if query:
-            post=post.filter(
-            Q(content__icontains=query)|
-            Q(title__icontains=query)|
-            Q(author__icontains=query)
-            ).distinct()
-            return render(request, 'blog/search.html', {'posts':post})
-        else:
-            return render(request, 'blog/index.html', {'posts':post})
+    return render(request, 'blog/search.html', {'posts':post})
 
 def aboutus(request):
     return render(request, 'blog/aboutus.html')
@@ -173,9 +170,12 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-
 def reportuser(request):
     from_email = request.GET.get('from_email', None)
-    report_email = request.GET.get('report_email', None)
-    send_mail('Report User '+report_email, 'Hi! I would like to report the user.', from_email , ['iammattcaffery@gmail.com',])
-    return JsonResponse({"from_email": report_email})
+    report_id = request.GET.get('report_id', None)
+
+    if from_email == "":
+        return JsonResponse({"message": "Please login in order to report this article.", "login": "f"})
+    else:
+        send_mail('Report User ', 'Hi! I would like to report the post with id'+str(report_id), from_email , ['iammattcaffery@gmail.com',])
+        return JsonResponse({"message": "Thank you for reporting. Our team will review your request and get back to you.", "login": "t"})
