@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'storages',
     'crispy_forms',
-    'mathfilters'
+    'mathfilters',
 ]
 
 
