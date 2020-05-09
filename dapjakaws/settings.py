@@ -93,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'new',
         'USER': 'my',
-        'PASSWORD': '',
+        'PASSWORD': 'malecode',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -143,11 +143,11 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-# AWS_ACCESS_KEY_ID = ''
-# AWS_SECRET_ACCESS_KEY = ''
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_STORAGE_BUCKET_NAME = 'dapjakbucket'
-# AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'dapjakbucket'
+AWS_S3_REGION_NAME = 'ap-south-1'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -159,5 +159,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_USER = config['EMAIL_USER']
+EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
+#
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1026

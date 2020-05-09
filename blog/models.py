@@ -33,15 +33,6 @@ class EntertainmentModel(models.Model):
             img.save(self.jumbotron.path)
 
 class Post(models.Model):
-
-    class hashtag(models.IntegerChoices):
-        news = 1
-        entertainment = 2
-        sports = 3
-        tech = 4
-        travel = 5
-        blog = 6
-
     id=models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     sub_title = models.CharField(max_length=100, null="True")
@@ -50,9 +41,8 @@ class Post(models.Model):
     credit = models.CharField(max_length=100, default="no credits available", null="True")
     image = models.ImageField(default='default.png', upload_to= 'media')
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    hashtag = models.IntegerField(choices=hashtag.choices, default = 1)
-    hideornot=models.BooleanField(default=False)
+    author = models.ForeignKey(User, related_name="author_id", on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.title

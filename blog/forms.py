@@ -55,8 +55,3 @@ class ContactForm(forms.ModelForm):
     class  Meta:
         model=ContactModel
         fields=('name','email','message')
-
-# class PostCreateForm(forms.ModelForm):
-#     class Meta:
-#         model=Post
-#         fields=['image']

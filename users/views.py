@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.core.files.storage import FileSystemStorage
@@ -38,10 +38,42 @@ def check_email(request):
     }
     return JsonResponse(result)
 
-#To increase the followers of the user.
-def followuser{
-    
-}
+class FollowView(DetailView):
+
+    def get(self, request, id):
+
+        loggedIn = request.user.id
+        loggedIn = User.objects.filter(id=loggedIn).first()
+        toFollow = User.objects.filter(id=id).first()
+
+        twt_user = User.objects.get(id=id)
+
+        if request.user.is_authenticated:
+            if UserFollowing.objects.filter(loggedInUser=request.user.id, toFollowUser=id).exists():
+                UserFollowing.objects.filter(loggedInUser=loggedIn, toFollowUser=toFollow).delete()
+                button_text = 'Follow'
+
+            else:
+                UserFollowing.objects.create(loggedInUser=loggedIn, toFollowUser=toFollow)
+                button_text = 'Following'
+
+            followers = twt_user.followers.count()
+            following = twt_user.following.count()
+
+            result = {
+                        'followers' : followers,
+                        'following' : following,
+                        'button_text' : button_text,
+                        'login' : 't'
+                        }
+
+
+        else:
+            result = {
+                        'login' : 'f'
+                        }
+        return JsonResponse(result)
+
 
 @login_required
 def profile(request):

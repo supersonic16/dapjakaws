@@ -9,17 +9,28 @@ from django.template.loader import get_template
 from django.core.mail import BadHeaderError, send_mail
 from django.template import Context
 from django.db.models import Q
+from users.models import UserFollowing
 from .forms import *
 from .models import *
 # Create your views here.
 class Indexview(TemplateView):
     template_name='blog/index.html'
     def get(self,request):
-        criterion1=Q(author = 1)
-        # criterion2=Q(hideornot=False)
-        post=Post.objects.all().order_by('-date_posted')
-        posts=Post.objects.filter(criterion1)
-        args={'posts':posts, 'post':post}
+        if request.user.is_authenticated:
+            current_user = request.user.id
+        else:
+            current_user = 1
+
+        toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
+        sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
+        for follow_id in toFollowList[1:]:
+            new = Post.objects.filter(author = follow_id.toFollowUser.id)
+            sample_query = new | sample_query
+
+        sample_query = sample_query.order_by('-date_posted')
+        post = Post.objects.all().order_by('-date_posted')
+        posts = Post.objects.filter(author__is_superuser = 't').order_by('-date_posted')
+        args={'posts':posts, 'post':post, 'followed_blogs': sample_query}
         return render(request, self.template_name, args)
 
 def search(request):
@@ -79,25 +90,6 @@ class Nameview(TemplateView):
 
         return render(request, self.template_name, args)
 
-# class Entertainmentview(TemplateView):
-#     def get(self, request):
-#         form = PostCreateForm()
-#         args={'form': form}
-#         return render(request, 'blog/new_post.html', args)
-#
-#     def post(self, request):
-#         if request.method == 'POST':
-#             form = PostCreateForm(request.POST, request.FILES)
-#
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, f'Your post has been recorded.')
-#                 return redirect('blog:index')
-#         else:
-#             form = PostCreateForm()
-#
-#         args={'form': form}
-#         return render(request, 'blog/new_post.html', args)
 class Entertainmentview(TemplateView):
     template_name='blog/entertainment.html'
     def get(self,request,id=14):
@@ -112,13 +104,6 @@ class NewsView(ListView):
     template_name='blog/news.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-#
-# class HomeView(ListView):
-#     model = Post
-#     template_name='blog/home.html'
-#     context_object_name='posts'
-#     ordering=['-date_posted']
-#     paginate_by = 2
 
 
 class UserPostListView(ListView):
@@ -128,9 +113,18 @@ class UserPostListView(ListView):
 
     def get(self, request, username="my123456"):
         user = get_object_or_404(User, username=username)
+        twt_user = User.objects.get(id=user.id)
+        followers = twt_user.followers.count()
+        following = twt_user.following.count()
         post = Post.objects.filter(author=user).order_by('-date_posted')
         count = Post.objects.filter(author=user).count()
-        args={'posts': post, 'user': user, 'count': count}
+
+        if UserFollowing.objects.filter(loggedInUser=request.user.id, toFollowUser=user.id).exists():
+            button_text = "Following"
+        else:
+            button_text = "Follow"
+
+        args={'posts': post, 'user': user, 'count': count, 'followers': followers, 'following': following, 'button_text': button_text}
         return render(request, self.template_name,args)
 
 class PostDetailView(DetailView):
