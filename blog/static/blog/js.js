@@ -25,9 +25,6 @@ $(document).ready(function(){
       $("#searchText").show();
     }
   });
-  $(window).click(function(){
-
-  })
   $(window).resize(function(){
       if ($(window).width() < 992){
         $("#mydiv").removeClass("input-group flex-box");
