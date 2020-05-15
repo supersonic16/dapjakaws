@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'dapjakdb1',
         'USER': 'postgres',
         'PASSWORD': 'malecode',
-        'HOST': 'dapjakawsdb.co1w3ezac719.ap-south-1.rds.amazonaws.com',
+        'HOST': 'dapjakdb1.co1w3ezac719.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
