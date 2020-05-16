@@ -142,7 +142,7 @@ STATIC_URL = '/static/'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 AWS_ACCESS_KEY_ID = config['AWS_BUCKET_ID']
 AWS_SECRET_ACCESS_KEY = config['AWS_BUCKET_KEY']
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
