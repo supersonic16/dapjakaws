@@ -4,8 +4,8 @@
 <body>
 <div class="container" style="margin-top: -3px;">
   <div class="row">
-    <div class="col-lg-2 col-md-1"></div>
-    <div class="col-lg-8 col-md-10 col-sm-12 bg-white">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 col-md-12 col-sm-12 bg-white">
       <div class="twPc-div">
         <a class="twPc-bg twPc-block"></a>
         {% if request.user != user %}
@@ -56,7 +56,7 @@
       <div class="container-fluid border p-0 mt-3  mb-2">
         <br>
         <div class="row">
-          <div class="container text-justify" >
+          <div class="container" >
             <h3 class="h3 px-3">{{ post.title }}</h3>
             <h5 class="h5 text-muted px-3">{{ post.sub_title }}</h5>
             <div class="row pl-4 mt-4 mb-3 pb-3" style="display: flex; flex-wrap: wrap; margin-left: 1px;">
@@ -72,7 +72,7 @@
             <img src="{{ post.cover_image.url }}" class="jumbotron2">
           </div>
           <div class="container p-4 mx-2">
-          <p class="text-justify text-wrap user-read-more">{{ post.content }}</p>
+          <p class="text-justify text-wrap user-read-more">{{ post.content|linebreaksbr }}</p>
           <a href="{% url 'blog:post-detail' post.id %}">Read More</a>
           </div>
       </div>
@@ -80,7 +80,7 @@
       {% endfor %}
   </div>
 </div>
-  <div class="col-lg-2 col-md-1"></div>
+  <div class="col-lg-2"></div>
 </div>
 </div>
 

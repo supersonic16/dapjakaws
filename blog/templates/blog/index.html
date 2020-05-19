@@ -30,7 +30,8 @@
             </blockquote>
           </div>
           <div class="col-md-10">
-            <p class="text-justify">{{ posts.content }}</p>
+            <p class="text-justify post_content">{{ posts.content|linebreaksbr }}</p>
+            <a href="{% url 'blog:post-detail' posts.id %}">Read More</a>
           </div>
         </div>
         <!-- Buttons for share and like -->
@@ -75,6 +76,9 @@
 
 {% block javascript %}
   <script type="text/javascript">
+    $('.post_content').each(function(index, element) {
+      $clamp(element, { clamp: 5, useNativeClamp: false });
+  });
   $(".class_reportuser").click(function(event){
       var report_id=$(this).attr('id');
       var from_email = '{{ user.email }}';

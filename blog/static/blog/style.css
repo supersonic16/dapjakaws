@@ -296,6 +296,8 @@ ul.twPc-Arrange {
 }
 
 .user-read-more{
+  line-clamp: 5;
+  word-wrap:break-word;
   overflow: hidden;
   text-overflow: string;
   display: -webkit-box;
