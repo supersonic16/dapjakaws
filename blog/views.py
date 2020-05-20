@@ -22,12 +22,17 @@ class Indexview(TemplateView):
             current_user = 1
 
         toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
-        sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
-        for follow_id in toFollowList[1:]:
-            new = Post.objects.filter(author = follow_id.toFollowUser.id)
-            sample_query = new | sample_query
+        if toFollowList:
+            sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
+            for follow_id in toFollowList[1:]:
+                new = Post.objects.filter(author = follow_id.toFollowUser.id)
+                sample_query = new | sample_query
 
-        sample_query = sample_query.order_by('-date_posted')
+            sample_query = sample_query.order_by('-date_posted')
+
+        else:
+            sample_query = Post.objects.none()
+
         post = Post.objects.all().order_by('-date_posted')
         posts = Post.objects.filter(author__is_superuser = 't').order_by('-date_posted')
         args={'posts':posts, 'post':post, 'followed_blogs': sample_query}
