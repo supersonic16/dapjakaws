@@ -22,6 +22,7 @@ class Indexview(TemplateView):
             current_user = 1
 
         toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
+        print(toFollowList)
         if toFollowList:
             sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
             for follow_id in toFollowList[1:]:
