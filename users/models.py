@@ -8,15 +8,22 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #
-    #     img=Image.open(self.image.url)
-    #
-    #     if img.height > 300 or img.width > 300:
-    #         output_size = (300, 300)
-    #         img.thumbnail(output_size)
-    #         img.save(self.image.url)
+    def save(self):
+        img=Image.open(self.image)
+
+        output = BytesIO()
+
+        img = img.resize((300,300), Image.ANTIALIAS)
+
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+        img.save(output, format='JPEG', quality=100)
+        output.seek(0)
+
+        self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.cover_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+        super(Profile, self).save()
+
 
 class UserFollowing(models.Model):
     id=models.AutoField(primary_key=True)

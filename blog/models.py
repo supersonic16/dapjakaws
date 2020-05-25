@@ -14,24 +14,6 @@ class ContactModel(models.Model):
     email=models.EmailField(max_length=100)
     message=models.CharField(max_length=500)
 
-class EntertainmentModel(models.Model):
-    id=models.AutoField(primary_key=True)
-    heading=models.CharField(max_length=100)
-    content=models.TextField(max_length=500)
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    jumbotron=models.ImageField(upload_to= 'media', default="no image")
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img=Image.open(self.jumbotron.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.jumbotron.path)
-
 class Post(models.Model):
     id=models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
@@ -47,15 +29,23 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #
-    #     img=Image.open(self.image.url)
-    #
-    #     if img.height > 300 or img.width > 300:
-    #         output_size = (300, 300)
-    #         img.thumbnail(output_size)
-    #         img.save(self.image.url)
+    def save(self):
+        img=Image.open(self.cover_image)
+
+        output = BytesIO()
+
+        img = img.resize((800,600), Image.ANTIALIAS)
+
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+        img.save(output, format='JPEG', quality=90)
+        output.seek(0)
+
+        self.cover_image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.cover_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+        super(Post, self).save()
+
 
     def get_absolute_url(self):
         return reverse('blog:post-detail', kwargs={'pk': self.pk})

@@ -4,7 +4,6 @@ html{
 button:focus{
   outline:0;
 }
-
 .fas:hover{
   color: #404040;
 }
@@ -89,6 +88,7 @@ body{
   width: 40px;
 }
 #searchText{
+  text-indent: 5px;
   padding: 5px;
   font-size: 14px;
   float: right;
@@ -101,7 +101,6 @@ body{
 #searchText::placeholder{
   font-size: 14px;
   color: grey;
-  padding-left: 5px;
 }
 
 .img-fluid{
@@ -156,7 +155,59 @@ body{
   height: 50px;
   width: 50px;
 }
-/* */
+/* Create a new post*/
+#id_title, #id_sub_title, #id_credit, #id_content{
+  text-indent: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-top: 0px;
+  border-bottom: none;
+  border-top: none;
+  border-right: none;
+}
+#id_title{
+  font-size: 35px;
+}
+#id_sub_title{
+  font-size: 25px;
+}
+#id_credit{
+  font-size: 18px;
+}
+#id_content{
+  font-size: 22px;
+}
+#id_cover_image{
+  padding-top: 0px;
+  width: 100%;
+}
+#id_cover_image::-webkit-file-upload-button {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  border-radius: 3px;
+}
+#id_cover_image::-webkit-file-upload-button:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+#id_classification{
+  width: 100%;
+}
+#id_title:focus, #id_sub_title:focus, #id_cover_image:focus, #id_credit:focus, #id_content:focus {
+    outline: none;
+}
+.custom-btn{
+  margin-left: 20px;
+  border-radius: 20px;
+}
+.custom-btn:target{
+  color: red;
+  background-color: red;
+}
+
+
 /* New Post Details*/
 .jumbotron1{
   background-size: cover;
@@ -301,7 +352,7 @@ ul.twPc-Arrange {
   overflow: hidden;
   text-overflow: string;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
 /* */
@@ -332,6 +383,15 @@ ul.twPc-Arrange {
    .latenet-addmargin{
      padding : 0px;
    }
+   .jumbotron1{
+     height: 250px;
+   }
+   h1{
+     font-size: 2rem;
+   }
+   h5{
+     font-size: 1.2rem;
+   }
     }
 @media (min-width:641px){ /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
   .con{
@@ -344,6 +404,7 @@ ul.twPc-Arrange {
   .latenet-addmargin{
     padding : 0px;
   }
+
 }
 @media (min-width:768px)
  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
@@ -359,6 +420,12 @@ ul.twPc-Arrange {
          }
      .latenet-addmargin{
        padding : 0px;
+     }
+     h1{
+       font-size: 2.5rem;
+     }
+     h5{
+       font-size: 1.25rem;
      }
     }
 @media (min-width:961px)

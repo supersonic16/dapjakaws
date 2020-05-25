@@ -22,7 +22,7 @@ class Indexview(TemplateView):
             current_user = 1
 
         toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
-        print(toFollowList)
+
         if toFollowList:
             sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
             for follow_id in toFollowList[1:]:
@@ -138,7 +138,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content']
 
 
     def form_valid(self, form):
@@ -147,7 +147,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
