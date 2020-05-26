@@ -12,8 +12,8 @@
       {% for posts in posts|slice:":2" %}
         <div class="container-fluid bg-white pt-3 mb-4 border border-custom" id="{{ posts.id }}">
           <div class="containers">
-            <h1 class="h1">{{ posts.title }}</h1>
-            <h4 class="h4 text-muted">{{ posts.sub_title }}</h4>
+            <h1>{{ posts.title }}</h1>
+            <h5 text-muted">{{ posts.sub_title }}</h5>
             <br>
             <img src="{{ posts.cover_image.url }}" class="jumbotron2">
         </div>
