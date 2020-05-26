@@ -44,4 +44,11 @@ $(document).ready(function(){
       $("#topNav").addClass("scrollTop");
   });
 
+
+$("#id_title").attr("placeholder", "Title");
+$("#id_sub_title").attr("placeholder", "Sub title");
+$("#id_credit").attr("placeholder", "Image credits");
+$("#id_content").attr("placeholder", "Write your story");
+
+
 });
