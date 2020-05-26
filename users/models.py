@@ -25,7 +25,7 @@ class Profile(models.Model):
         img.save(output, format='JPEG', quality=100)
         output.seek(0)
 
-        self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.cover_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+        self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
         super(Profile, self).save()
 
 
