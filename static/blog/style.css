@@ -32,9 +32,7 @@ body{
 .asteriskField {
     display: none;
 }
-#changeProfile:hover{
-  background-image: url("");
-}
+
 /* Trying Flex-box */
 .center{
   display: block;
@@ -136,17 +134,7 @@ body{
   width: 55px;
 }
 
-.account-img-custom {
-  display: block;
-  width: 200px;
-  height: 200px;
-  border-radius: 75%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  margin: auto;
 
-}
 .flex-box{
   display:flex;
   justify-content: flex-end;
@@ -202,12 +190,13 @@ body{
   margin-left: 20px;
   border-radius: 20px;
 }
-.custom-btn:target{
-  color: red;
-  background-color: red;
+.custom-btn:hover{
+  margin-left: 20px;
+  border-radius: 20px;
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #dae0e5;
 }
-
-
 /* New Post Details*/
 .jumbotron1{
   background-size: cover;
@@ -264,14 +253,7 @@ form .alert li{
     height: auto;
     width: 100%;
 }
-.twPc-bg {
-    background-image: url("wood.jpg");
-    background-position: 0 50%;
-    background-size: 100% auto;
-    border-bottom: 1px solid #e1e8ed;
-    height: 190px;
-    width: 100%;
-}
+
 .twPc-block {
     display: block !important;
 }
@@ -281,8 +263,9 @@ form .alert li{
     text-align: right;
     width: 100%;
 }
+
+
 .twPc-avatarLink {
-    background-color: #fff;
     border-radius: 75%;
     display: inline-block !important;
     float: left;
@@ -292,9 +275,28 @@ form .alert li{
     vertical-align: bottom;
 }
 
+.account-img-custom {
+  display: block;
+  width: 200px;
+  height: 200px;
+  border-radius: 75%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  margin: auto;
+
+}
+
+#img1:hover{
+  opacity: 0.3;
+  transition: 0.5s ease;
+}
+#img2:{
+  opacity: 1;
+}
+
 .twPc-divUser {
   margin-top: 10px;
-  font-size: 16px;
   font-weight: 400;
   line-height: 21px;
   padding-right: -100px;
@@ -370,16 +372,28 @@ ul.twPc-Arrange {
     .latenet-addmargin{
       padding : 0px;
     }
-    h1{
-      font-size: 2rem;
+    .twPc-bg {
+        background-position: 0 50%;
+        background-size: 100% auto;
+        border-bottom: 1px solid #e1e8ed;
+        height: 150px;
+        width: 100%;
     }
-    h5{
-      font-size: 1.2rem;
+    .account-img-custom {
+      width: 150px;
+      height: 150px;
     }
-    .jumbotron1{
-      height: 250px;
+    .twPc-avatarLink {
+        margin: -100px 0px 0px 15px;
     }
+    .hoverbutton{
+        margin-top: 110px;
+        margin-right: 5px;
     }
+    .twPc-divUser{
+    font-size: 14px;
+    }
+}
 @media (min-width:481px)
  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
    .con{
@@ -436,6 +450,24 @@ ul.twPc-Arrange {
      h5{
        font-size: 1.25rem;
      }
+     .twPc-bg {
+         height: 190px;
+     }
+     .twPc-avatarLink {
+         margin: -180px 0px 0px 15px;
+     }
+     .account-img-custom {
+       width: 200px;
+       height: 200px;
+     }
+     .hoverbutton{
+         margin-top: 145px;
+         margin-right: 5px;
+     }
+     .twPc-divUser{
+     font-size: 16px;
+     }
+
     }
 @media (min-width:961px)
 { /* tablet, landscape iPad, lo-res laptops ands desktops */
@@ -460,6 +492,8 @@ ul.twPc-Arrange {
     .latenet-addmargin{
       padding: 0px 0px 0px 20px;
     }
+
+
   }
 @media (min-width:1025px)
 { /* big landscape tablets, laptops, and desktops */

@@ -73,7 +73,19 @@ class FollowView(DetailView):
                         'login' : 'f'
                         }
         return JsonResponse(result)
+    
+def changepassword(request):
+    if request.method == 'POST':
+        r_form = PasswordChangeForm(request.user, request.POST)
+        if r_form.is_valid():
+            new = r_form.save()
+            update_session_auth_hash(request, new)  # Important!
+            messages.success(request, f'Your account has been updated.')
+            return redirect('profile')
+    else:
+        r_form = PasswordChangeForm(request.user)
 
+    return render(request, 'users/changepassword.html', {'r_form': r_form})
 
 @login_required
 def profile(request):
@@ -83,7 +95,7 @@ def profile(request):
 
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
-            p_form.save()
+
             messages.success(request, f'Your account has been updated.')
             return redirect('profile')
     else:

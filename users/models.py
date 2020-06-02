@@ -12,7 +12,7 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    def save(self):
+    def save(self, *args, **kwargs):
         img=Image.open(self.image)
 
         output = BytesIO()
@@ -26,7 +26,7 @@ class Profile(models.Model):
         output.seek(0)
 
         self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
-        super(Profile, self).save()
+        super(Profile, self).save(*args, **kwargs)
 
 
 class UserFollowing(models.Model):

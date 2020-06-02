@@ -32,7 +32,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self):
+    def save(self, *args, **kwargs):
         img=Image.open(self.cover_image)
 
         output = BytesIO()
@@ -47,7 +47,7 @@ class Post(models.Model):
 
         self.cover_image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.cover_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
 
-        super(Post, self).save()
+        super(Post, self).save(*args, **kwargs)
 
 
     def get_absolute_url(self):

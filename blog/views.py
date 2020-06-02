@@ -97,12 +97,10 @@ class Nameview(TemplateView):
         return render(request, self.template_name, args)
 
 class Entertainmentview(TemplateView):
+    model = Post
     template_name='blog/entertainment.html'
-    def get(self,request,id=14):
-        post=Post.objects.all().order_by('-date_posted')
-        posts=get_object_or_404(Post,id=id)
-        args={'posts':posts, 'post':post,'id':id}
-        return render(request, self.template_name, args)
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
 
 
 class NewsView(ListView):
