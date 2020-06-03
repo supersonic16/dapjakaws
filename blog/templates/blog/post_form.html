@@ -6,7 +6,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-1"></div>
-    <div class="col-lg-10 col-12 bg-white m-n5 p-n5">
+    <div class="col-lg-10 col-12 bg-white mx-n5 px-n5">
   <form class="text-center border border-light p-5" enctype= 'multipart/form-data' method="post">
     {% csrf_token %}
 
@@ -45,6 +45,13 @@
   {{ form.content.errors }}
     <label for="{{ form.content.id_content }}"></label>
   {{ form.content }}
+    </div>
+<!-- Classification -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+  {{ form.classification.errors }}
+    <label for="{{ form.classification.id_classification }}" style="float: left;">Classification</label>
+  {{ form.classification }}
     </div>
     <button class="btn btn-primary btn-block" type="submit" style="width: auto; margin-top: 20px;">Publish</button>
   </form>

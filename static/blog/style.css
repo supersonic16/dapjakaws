@@ -202,7 +202,6 @@ body{
   background-size: cover;
   background-position: center center;
   width: 100%;
-  height: 500px;
 }
 .jumbotron2{
   background-size: cover;
@@ -393,6 +392,9 @@ ul.twPc-Arrange {
     .twPc-divUser{
     font-size: 14px;
     }
+    .jumbotron1{
+      height: 250px;
+    }
 }
 @media (min-width:481px)
  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
@@ -406,9 +408,7 @@ ul.twPc-Arrange {
    .latenet-addmargin{
      padding : 0px;
    }
-   .jumbotron1{
-     height: 250px;
-   }
+
    h1{
      font-size: 2rem;
    }
@@ -426,6 +426,9 @@ ul.twPc-Arrange {
   }
   .latenet-addmargin{
     padding : 0px;
+  }
+  .jumbotron1{
+    height: 400px;
   }
 
 }

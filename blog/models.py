@@ -1,4 +1,4 @@
-from django.db import models
+    from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -17,16 +17,27 @@ class ContactModel(models.Model):
     email=models.EmailField(max_length=100)
     message=models.CharField(max_length=500)
 
+classify_into = (
+    ('none', 'None'),
+    ('news', 'News'),
+    ('entertainment', 'Entertainment'),
+    ('sports', 'Sports'),
+    ('tech', 'Tech'),
+    ('travel', 'Travel')
+)
+
 class Post(models.Model):
     id=models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
-    sub_title = models.CharField(max_length=100, null="True")
+    sub_title = models.CharField(max_length=100, blank=True, null=True)
     content = models.TextField()
-    cover_image = models.ImageField(upload_to= 'media', default="no image", null="True")
-    credit = models.CharField(max_length=100, default="no credits available", null="True")
+    cover_image = models.ImageField(upload_to= 'media', default="white.jpg", blank=True)
+    credit = models.CharField(max_length=50, blank=True, null=True)
     image = models.ImageField(default='default.png', upload_to= 'media')
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, related_name="author_id", on_delete=models.CASCADE)
+    classification=models.CharField(max_length=20, choices=classify_into, default='none')
+
 
 
     def __str__(self):
