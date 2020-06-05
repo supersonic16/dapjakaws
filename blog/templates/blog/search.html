@@ -1,42 +1,92 @@
 {% extends "base.html" %}
+
 {% block header %}
 {% endblock %}
 {% block body %}
 {% load static from static %}
-
-  <div class="container pt-4 pb-5">
-      {% for post in posts %}
-    <div class="container-fluid">
-      <div class="row">
+<body>
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-2"></div>
       <div class="col-lg-8 col-md-12 col-12 m-0 p-0">
-      <div class="container-fluid bg-white pt-3 border border-dark">
       <!-- Jumbotron -->
-        <div class="containers">
-            <h1 class="h1">
-            {{ post.heading }}
-            </h1><br>
-            <img src="{{ post.cover_image.url }}" class="img-fluid" height="100%" width="100%">
+      {% for posts in posts %}
+        <div class="container-fluid bg-white pt-3 mb-4 border border-custom" id="{{ posts.id }}">
+          <div class="containers">
+            <h1>{{ posts.title }}</h1>
+            <h5 class="text-muted">{{ posts.sub_title }}</h5>
+            <br>
+            <img src="{{ posts.cover_image.url }}" class="jumbotron2">
+            <div style="text-align: center; width: 100%;">
+            <small class="text-muted" >{{ posts.credit }}</small>
+            </div>
         </div>
-          <br>
-          <div class="row py-2">
-            <div class="col-md-2">
-              <blockquote class="blockquote text-right">
-              <footer class="blockquote-footer"><small>{{ post.author }}</small></footer>
-              </blockquote>
-            </div>
-            <div class="col-md-10">
-            <p class="text-justify">{{ post.content }}</p>
-            </div>
+        <br>
+        <div class="row py-2">
+          <div class="col-md-2">
+            <blockquote class="blockquote text-right">
+              {% if request.user.is_authenticated %}
+              <a class="blockquote-footer" href="{% url 'blog:user-posts' posts.author %}"><small>{{ posts.author }}</small></a>
+              {% else %}
+              <a class="blockquote-footer" href="{% url 'blog:user-posts' username='my' %}"><small>{{ posts.author }}</small></a>
+              {% endif %}
+              <p style="margin-top: -10px;"><small class="text-muted" style="font-size: 13px;">{{ posts.date_posted|date:"M d" }}</small></p>
+            </blockquote>
           </div>
-
+          <div class="col-md-10">
+            <p class="text-justify post_content">{{ posts.content|linebreaksbr }}</p>
+            <a href="{% url 'blog:post-detail' posts.id %}">Read More</a>
+          </div>
+        </div>
+        <!-- Buttons for share and like -->
+        <div class="dropdown flex-box">
+          <button style="background: white; border: none; font-size: 20px; color: #282828;" id="dropdownMenuButton" data-toggle="dropdown"><i class="fas fa-angle-down"></i></button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          {% if posts.author ==  request.user %}
+            <ul class="m-0 p-0"><a href="{% url 'blog:post-update' posts.id %}" class="dropdown-item">Update</a></ul>
+            <ul class="m-0 p-0"><a href="{% url 'blog:post-delete' posts.id %}" class="dropdown-item">Delete</a></ul>
+          {% else %}
+            <ul class="m-0 p-0"><a href="" class="class_reportuser dropdown-item" id="{{ posts.id }}">Report Article</a></ul>
+          {% endif %}
+          </div>
+        </div>
       </div>
-
-
+    {% endfor %}
+          <!--  -->
     </div>
 
+    <div class="col-lg-2"></div>
+
+  </div>
 </div>
-</div>
-{% endfor %}
-</div>
+
+{% block javascript %}
+  <script type="text/javascript">
+    $('.post_content').each(function(index, element) {
+      $clamp(element, { clamp: 5, useNativeClamp: false });
+  });
+  $(".class_reportuser").click(function(event){
+      var report_id=$(this).attr('id');
+      var from_email = '{{ user.email }}';
+    $.ajax({
+      url: {% url 'blog:reportuser' %},
+      dataType:  'json',
+      data: {
+        'report_id': report_id,
+        'from_email': from_email
+      },
+      success: function(result){
+        alert(result.message);
+        if(result.login == 'f'){
+        window.location.href = "/login";
+          }
+        }
+      })
+
+  })
+  </script>
+{% endblock %}
+
+</body>
 
 {% endblock %}
