@@ -175,5 +175,5 @@ def reportuser(request):
     if from_email == "":
         return JsonResponse({"message": "Please login in order to report this article.", "login": "f"})
     else:
-        send_mail('Report User ', 'Hi! I would like to report the post with id'+str(report_id), from_email , ['iammattcaffery@gmail.com',])
+        send_mail('Report User ', 'Hi! I would like to report the post with id'+str(report_id), from_email , ['no-reply@dapjak.com',])
         return JsonResponse({"message": "Thank you for reporting. Our team will review your request and get back to you.", "login": "t"})

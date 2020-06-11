@@ -40,15 +40,14 @@ $(document).ready(function(){
 
   $("#collapseButton").click(function(){
       $("#searchText").show();
-      $("nav").removeClass("fixed-top");
-      $("#topNav").addClass("scrollTop");
+      $("#topNav").toggleClass("fixed-top");
+      $("#topNav").toggleClass("scrollTop");
+      $(window).scrollTop(0);
   });
-
 
 $("#id_title").attr("placeholder", "Title");
 $("#id_sub_title").attr("placeholder", "Sub title");
 $("#id_credit").attr("placeholder", "Image credits");
 $("#id_content").attr("placeholder", "Write your story");
-
 
 });
