@@ -22,7 +22,6 @@ a:hover{
 
 body{
   height: 100%;
-  /* background-color: #F6F8FA; */
   padding-top: 60px;
   font-weight: normal;
   display: flex;
@@ -101,23 +100,6 @@ body{
   color: grey;
 }
 
-.img-fluid{
-  height: 200px;
-}
-.sidebar-box {
-  position: relative;
-  overflow: hidden;
-}
-.sidebar-box .read-more {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  margin: 0; padding: 30px 0;
-  /* "transparent" only works here because == rgba(0,0,0,0) */
-  background-image: linear-gradient(to bottom, transparent, black);
-}
 
 .customClass1{
   padding: 0rem 0rem 2rem 0rem;
@@ -145,7 +127,7 @@ body{
 }
 /* Create a new post*/
 #id_title, #id_sub_title, #id_credit, #id_content{
-  text-indent: 5px;
+  padding-left: 5px;
   width: 100%;
   margin-bottom: 10px;
   padding-top: 0px;
@@ -186,6 +168,9 @@ body{
 #id_title:focus, #id_sub_title:focus, #id_cover_image:focus, #id_credit:focus, #id_content:focus {
     outline: none;
 }
+#cover_image-clear_id{
+  float: left;
+}
 .custom-btn{
   margin-left: 20px;
   border-radius: 20px;
@@ -207,8 +192,19 @@ body{
   background-size: cover;
   background-position: center center;
   width: 100%;
-  height: 250px;
+  height: 300px;
+  width: calc(100% + 30px);
+  margin-left: calc(-15px);
+  margin-right: calc(-15px);
 }
+.jumbotron3{
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
 /* footer */
 
 .footer{
@@ -243,6 +239,10 @@ form .alert li{
 }
 #div_id_image div a{
   color: grey;
+}
+#id_image{
+  border: 0;
+  padding-left: 0;
 }
 /* */
 /* User profile information   */
@@ -357,6 +357,7 @@ ul.twPc-Arrange {
   -webkit-box-orient: vertical;
 }
 /* */
+
 
 /* media queries */
 @media (min-width:320px)
