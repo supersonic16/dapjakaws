@@ -14,7 +14,6 @@ urlpatterns=[
     url(r'^aboutus/$',views.aboutus, name='aboutus'),
     url(r'^contact/$',Contactview.as_view(), name='contact'),
     path('user/<str:username>/', UserPostListView.as_view(), name='user-posts'),
-    path('tech/', views.tech, name='tech'),
     path('post/<int:pk>/<slug:slug>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/<slug:slug>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('post/<int:pk>/<slug:slug>/', PostDetailView.as_view(), name='post-detail'),
