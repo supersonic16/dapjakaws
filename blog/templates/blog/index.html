@@ -1,161 +1,109 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="-1" />
-    <title>{% block title %}DapJak{% endblock %}</title>
-    {% load static from static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'blog/bootstrap.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="{% static 'blog/images/favicon-16x16.png' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}"/>
+{% extends "base.html" %}
 
-  <!-- header starts here -->
-
-    <header class="header">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="topNav">
-        <button class="navbar-toggler" type="button" id="collapseButton" data-toggle="collapse" data-target="#navbarToggler">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand pl-2" id="navbrand" href="{% url 'blog:index' %}">DapJak</a>
-
-          <div class="order-lg-2">
-            <a href="{% url "blog:post-create" %}"><i class="fas fa-plus"></i></a>
-
-            {% if request.user.is_authenticated %}
-            <button style="background: none; border: none;" id="dropdownMenuButton" data-toggle="dropdown">
-              <img class="rounded-circle nav-article-img m-2" src="{{ request.user.profile.image.url }}">
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <ul class="m-0 p-0 border-bottom"><a href="{% url "blog:user-posts" request.user.username %}" class="dropdown-item">{{ request.user }}</a></ul>
-              <ul class="m-0 p-0"><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></ul>
-              <ul class="m-0 p-0"><a href="{% url 'logout' %}" class="dropdown-item">Logout</a></ul>
-              {% else %}
-                  <a class="btn btn-dark mx-2 text-white" style="margin-top: 10px; margin-bottom: 10px;" href="{% url 'login' %}">Sign in</a>
-                {% endif %}
-            </div>
-          </div>
-
-
-
-          <div class="collapse navbar-collapse order-lg-1" id="navbarToggler">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:category' category='news' %}">News</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:category' category='entertainment' %}">Entertainment</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:category' category='sports' %}">Sports</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:category' category='tech' %}">Tech</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:category' category='travel' %}">Travel</a>
-              </li>
-
-            </ul>
-          <div class="input-group flex-box" id="mydiv">
-            <form action="{% url 'blog:search' %}" method="GET" id="myForm">
-               <div class="input-group">
-                <input type="text" id="searchText" class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Search DapJak">
-                <span class="input-group-append"><button type="submit" id="searchButton" style="background: none; border: none;"><i class="pl-1 pr-2 fas fa-search"></i></button>
-               </span>
-              </div>
-          </form>
-          </div>
-
-
-
-          </div>
-
-
-
-
-      </nav>
-    </header>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/dabe8d8ab2.js" crossorigin="anonymous"></script>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
-
-    <script src="https://unpkg.com/react/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-
-<script src="https://unpkg.com/babel-standalone"></script>
-
-    <script src="{% static 'blog/js.js' %}" type="text/javascript"></script>
-
-{% block head_extra %} {% endblock %}
-
-</head>
+{% block header %}
+{% endblock %}
+{% block body %}
+{% load static from static %}
 <body>
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 col-12 m-0 p-0">
+      <!-- Jumbotron -->
+      {% for posts in posts|slice:":5" %}
+        <div class="container-fluid bg-white pt-3 mb-4 border border-custom" id="{{ posts.id }}">
+          <div class="containers">
+            <h1>{{ posts.title }}</h1>
+            <h5 class="text-muted">{{ posts.sub_title }}</h5>
+            <br>
+            <img src="{{ posts.cover_image.url }}" class="jumbotron2">
+            <div style="text-align: center; width: 100%;">
+            <small class="text-muted" >{{ posts.credit }}</small>
+            </div>
+        </div>
+        <br>
+        <div class="row py-2">
+          <div class="col-md-2">
+            <blockquote class="blockquote text-right">
+              {% if request.user.is_authenticated %}
+              <a class="blockquote-footer" href="{% url 'blog:user-posts' posts.author %}"><small>{{ posts.author }}</small></a>
+              {% else %}
+              <a class="blockquote-footer" href="{% url 'blog:user-posts' username='my' %}"><small>{{ posts.author }}</small></a>
+              {% endif %}
+              <p style="margin-top: -10px;"><small class="text-muted" style="font-size: 13px;">{{ posts.date_posted|date:"M d" }}</small></p>
+            </blockquote>
+          </div>
+          <div class="col-md-10">
+            <p class="text-justify post_content">{{ posts.content|linebreaksbr }}</p>
+            <a href="{{posts.get_absolute_url}}">Read More</a>
+          </div>
+        </div>
+        <!-- Buttons for share and like -->
+        <div class="dropdown flex-box">
+          <button style="background: white; border: none; font-size: 20px; color: #282828;" id="dropdownMenuButton" data-toggle="dropdown"><i class="fas fa-angle-down"></i></button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          {% if posts.author ==  request.user %}
+            <ul class="m-0 p-0"><a href="{% url 'blog:post-update' pk=posts.id slug=posts.slug %}" class="dropdown-item">Update</a></ul>
+            <ul class="m-0 p-0"><a href="{% url 'blog:post-delete' pk=posts.id slug=posts.slug %}" class="dropdown-item">Delete</a></ul>
+          {% else %}
+            <ul class="m-0 p-0"><a href="" class="class_reportuser dropdown-item" id="{{ posts.id }}">Report Article</a></ul>
+          {% endif %}
+          </div>
+        </div>
       </div>
     {% endfor %}
-  {% endif %}
-{% block body %}
-{% endblock %}
-</body>
-<!-- footer -->
-<footer class="footer">
-<nav class="navbar">
-<div class="container-fluid py-3">
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-12 col-lg-7">
-          <p class="text-white"><font size='4'><b>DapJak</b></font><font size='2'> is a news and information content platform.
-          Powered by its own unique technology, DapJak is the go-to source for all the latest
-          news, highlights and entertainment content for people around the world. </font></p>
+          <!--  -->
     </div>
-<!-- About us and privacy terms -->
-    <div class="col-lg-1"></div>
-    <div class="col-3 col-md-3 col-sm-3 col-lg-1 text-center">
-      <a href="{% url 'blog:aboutus' %}" class="font-weight-normal">ABOUT US</a>
-    </div>
-    <div class="col-3 col-md-3 col-sm-3 col-lg-1 text-center">
-      <a href="{% url 'blog:subscribe' %}" class="font-weight-normal">SUBSCRIBE</a>
-    </div>
-    <div class="col-3 col-md-3 col-sm-3 col-lg-1 text-center">
-      <a href="{% url 'blog:shop' %}" class="font-weight-normal">SHOP</a>
-    </div>
-    <div class="col-3 col-md-3 col-sm-3 col-lg-1 text-center">
-      <a href="{% url 'blog:contact' %}" class="font-weight-normal">CONTACT</a>
-    </div>
-  </div>
 
-<!-- social media buttons -->
-  <div class="container-fluid con">
-    <a href="https://www.facebook.com/feedxpress/" target="_blank" class="fa fa-facebook"></a>
-    <a href="https://twitter.com/feedxpress" target="_blank" class="fa fa-twitter"></a>
-    <a href="https://pinterest.com/feedxpress/" target="_blank" class="fa fa-pinterest"></a>
-    <a href="https://www.instagram.com/feedxpress/" target="_blank" class="fa fa-instagram"></a>
-  </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 m-0 pb-2 latenet-addmargin">
+      <div class="container-fluid bg-white border border-custom p-0">
+        <div class="container-fluid pt-3 border-bottom mb-2">
+             <h3>Latest from your Network</h3>
+        </div>
+      {% for post in followed_blogs|slice:":5" %}
+       <div class="row m-auto p-2">
+           <div class="col-2">
+           <center><a href={{post.get_absolute_url}}'><img class="rounded-circle side-article-img" src="{{ post.author.profile.image.url }}"></a></center>
+            </div>
 
-
-<!-- All rights reserved -->
-    <div class="container">
-      <div class="text-center text-white">
-      &copy; 2020 DapJak, Inc. All rights reserved.
+        <div class="col-10 pl-3">
+              <a class="text-dark" href='{{post.get_absolute_url}}'><p class="m-0"><strong>{{ post.title }}</strong></p></a>
+              <a class="text-dark" href='{% url "blog:user-posts" post.author %}' style="font-size: 14px;">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"M d" }}</small>
+        </div>
+      </div>
+       {% endfor %}
       </div>
     </div>
   </div>
-</nav>
-</footer>
+</div>
 
-</html>
+{% block javascript %}
+  <script type="text/javascript">
+    $('.post_content').each(function(index, element) {
+      $clamp(element, { clamp: 5, useNativeClamp: false });
+  });
+  $(".class_reportuser").click(function(event){
+      var report_id=$(this).attr('id');
+      var from_email = '{{ user.email }}';
+    $.ajax({
+      url: {% url 'blog:reportuser' %},
+      dataType:  'json',
+      data: {
+        'report_id': report_id,
+        'from_email': from_email
+      },
+      success: function(result){
+        alert(result.message);
+        if(result.login == 'f'){
+        window.location.href = "/login";
+          }
+        }
+      })
+
+  })
+  </script>
+{% endblock %}
+
+</body>
+
+{% endblock %}
