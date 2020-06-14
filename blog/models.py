@@ -6,6 +6,8 @@ from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
+from dapjakaws.utils import unique_slug_generator
+from django.db.models.signals import pre_save
 
 # Create your models here.
 class NameModel(models.Model):
