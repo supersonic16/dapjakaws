@@ -12,11 +12,6 @@ class NameModel(models.Model):
     name=models.CharField(max_length=100)
     email=models.EmailField(max_length=100)
 
-class ContactModel(models.Model):
-    name=models.CharField(max_length=100)
-    email=models.EmailField(max_length=100)
-    message=models.CharField(max_length=500)
-
 classify_into = (
     ('none', 'None'),
     ('news', 'News'),
@@ -30,6 +25,7 @@ class Post(models.Model):
     id=models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     sub_title = models.CharField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
     content = models.TextField()
     cover_image = models.ImageField(upload_to= 'media', default="white.jpg", blank=True)
     credit = models.CharField(max_length=50, blank=True, null=True)
@@ -62,4 +58,4 @@ class Post(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse('blog:post-detail', kwargs={'pk': self.pk})
+        return reverse('blog:post-detail', args=[self.id, self.slug])

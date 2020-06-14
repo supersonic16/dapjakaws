@@ -73,7 +73,7 @@
           </div>
           <div class="container p-4 mx-2">
           <p class="text-justify text-wrap user-read-more">{{ post.content|linebreaksbr }}</p>
-          <a href="{% url 'blog:post-detail' post.id %}">Read More</a>
+          <a href="{{post.get_absolute_url}}">Read More</a>
           </div>
       </div>
     </div>

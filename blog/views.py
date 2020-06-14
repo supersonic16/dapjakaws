@@ -96,18 +96,32 @@ class Nameview(TemplateView):
 
         return render(request, self.template_name, args)
 
-class Entertainmentview(TemplateView):
-    model = Post
-    template_name='blog/entertainment.html'
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
 
+class Categoryview(TemplateView):
 
-class NewsView(ListView):
-    model = Post
-    template_name='blog/news.html'
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
+    template_name='blog/category.html'
+    def get(self,request,category):
+        if request.user.is_authenticated:
+            current_user = request.user.id
+        else:
+            current_user = 1
+
+        toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
+        if toFollowList:
+            sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
+            for follow_id in toFollowList[1:]:
+                new = Post.objects.filter(author = follow_id.toFollowUser.id)
+                sample_query = new | sample_query
+
+            sample_query = sample_query.filter(classification=category).order_by('-date_posted')
+
+        else:
+            sample_query = Post.objects.none()
+
+        posts = Post.objects.filter(author__is_superuser = 't')
+        posts = posts.filter(classification=category).order_by('-date_posted')
+        args={'posts':posts, 'post': sample_query}
+        return render(request, self.template_name, args)
 
 
 class UserPostListView(ListView):
@@ -133,6 +147,10 @@ class UserPostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+
+    def get(self,request,pk,slug):
+        post = get_object_or_404(Post, pk=pk)
+        return render(request, 'blog/post_detail.html', {'post': post})
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
