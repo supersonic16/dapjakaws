@@ -9,27 +9,27 @@
 
 <!--  -->
       <div class="twPc-div" style="border: none;">
-        <h1 class="p-3 mb-0 pb-0">{{ object.title }}</h1>
-        <h5 class="pl-3 pt-0 mt-0 text-muted">{{ object.sub_title }}</h5>
+        <h1 class="p-3 mb-0 pb-0">{{ post.title }}</h1>
+        <h5 class="pl-3 pt-0 mt-0 text-muted">{{ post.sub_title }}</h5>
         <div class="row pl-4 mt-4 mb-3 pb-3" style="display: flex; flex-wrap: wrap; margin-left: 1px;">
           <div class="pl-1" style="flex: 10%;">
-          <img src="{{ object.author.profile.image.url }}" class="rounded-circle post-article-img">
+          <img src="{{ post.author.profile.image.url }}" class="rounded-circle post-article-img">
           </div>
             <div class="pt-1 m-0" style="flex: 90%;">
-              <p class="post-detail-author p-0 m-0">{{ object.author.first_name }}</p>
-              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' object.author.username %}" style="font-weight: 400;">@{{ object.author }}</a>
-              <small class="text-muted">{{ object.date_posted|date:"M d" }}</small>
+              <p class="post-detail-author p-0 m-0">{{ post.author.first_name }}</p>
+              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' post.author.username %}" style="font-weight: 400;">@{{ object.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"M d" }}</small>
             </div>
         </div>
-        <img src="{{ object.cover_image.url }}" class="jumbotron1">
+        <img src="{{ post.cover_image.url }}" class="jumbotron1">
         <div style="text-align: center; width: 100%;">
-        <small class="text-muted" >{{ object.credit }}</small>
+        <small class="text-muted" >{{ post.credit }}</small>
         </div>
       </div>
   <!--  -->
     <div class="container-fluid bg-white m-0">
     <br>
-          <p class="text-justify text-wrap">{{ object.content|linebreaksbr }}</p>
+          <p class="text-justify text-wrap">{{ post.content|linebreaksbr }}</p>
     </div>
   </div>
 
