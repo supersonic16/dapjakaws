@@ -17,7 +17,7 @@
           </div>
             <div class="pt-1 m-0" style="flex: 90%;">
               <p class="post-detail-author p-0 m-0">{{ post.author.first_name }}</p>
-              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' post.author.username %}" style="font-weight: 400;">@{{ object.author }}</a>
+              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' post.author.username %}" style="font-weight: 400;">@{{ post.author }}</a>
               <small class="text-muted">{{ post.date_posted|date:"M d" }}</small>
             </div>
         </div>
