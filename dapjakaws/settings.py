@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'mathfilters',
+    'webmaster_verification',
 ]
 
 
@@ -166,3 +167,6 @@ DEFAULT_FROM_EMAIL = "no-reply@dapjak.com"
 #
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1026
+WEBMASTER_VERIFICATION = {
+    'google': 'google21cd917c10657000',
+}
