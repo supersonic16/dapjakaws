@@ -42,6 +42,7 @@ urlpatterns = [
     path('followuser/<int:id>/', user_views.FollowView.as_view(), name="followuser"),
     path('', include('blog.urls')),
     path('changepassword/', user_views.changepassword, name="changepassword"),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'', include('webmaster_verification.urls'))
 
 ]

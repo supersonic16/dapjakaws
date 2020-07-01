@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
@@ -10,6 +11,7 @@ from django.core.mail import BadHeaderError, send_mail
 from django.template import Context
 from django.db.models import Q
 from users.models import UserFollowing
+from django.contrib import messages
 from .forms import *
 from .models import *
 # Create your views here.
@@ -22,7 +24,6 @@ class Indexview(TemplateView):
             current_user = 1
 
         toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
-
         if toFollowList:
             sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
             for follow_id in toFollowList[1:]:
@@ -48,7 +49,7 @@ def search(request):
         Q(title__icontains=query)|
         Q(sub_title__icontains=query)|
         Q(author__username__icontains=query)
-        ).distinct()
+    ).distinct().order_by('-date_posted')
 
     return render(request, 'blog/search.html', {'posts':post})
 
@@ -58,49 +59,28 @@ def aboutus(request):
 def shop(request):
     return render(request, 'blog/shop.html')
 
-class Contactview(TemplateView):
-    template_name='blog/contact.html'
+def contact(request):
+    return render(request, 'blog/contact.html')
 
-    def get(self,request):
-        form=ContactForm()
-        return render(request, self.template_name, {'form':form})
+def contactnow(request):
+    name = request.GET.get('name', None)
+    email = request.GET.get('email', None)
+    message = request.GET.get('message', None)
 
-    def post(self,request):
-        form=ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            name=form.cleaned_data['name']
-            email=form.cleaned_data['email']
-            message=form.cleaned_data['message']
-            form=ContactForm()
+    send_mail('User Contact:'+str(name)+' '+str(email), str(message), 'admin@dapjak.com' , ['no-reply@dapjak.com',])
+    return JsonResponse({"message": "We have received your response. Our team will review your request and get back to you."})
 
-        args={'form':form, 'name':name, 'email':email, 'message':message}
-        return render(request, self.template_name, args)
-
-class Nameview(TemplateView):
-    template_name='blog/subscribe.html'
-
-    def get(self,request):
-        form=NameForm()
-        return render(request, self.template_name, {'form':form})
-
-    def post(self,request):
-        form=NameForm(request.POST)
-        if form.is_valid():
-            form.save()
-            name=form.cleaned_data['name']
-            email=form.cleaned_data['email']
-            form=NameForm()
-
-        args={'form':form, 'name':name, 'email':email}
-
-        return render(request, self.template_name, args)
+class Subcribeview(SuccessMessageMixin, CreateView):
+    model = Subscribe
+    success_message = "Thank you for subscribing to our newsletter."
+    fields = ['subscriber_name','subscriber_email']
 
 
 class Categoryview(TemplateView):
 
     template_name='blog/category.html'
     def get(self,request,category):
+
         if request.user.is_authenticated:
             current_user = request.user.id
         else:
@@ -120,9 +100,8 @@ class Categoryview(TemplateView):
 
         posts = Post.objects.filter(author__is_superuser = 't')
         posts = posts.filter(classification=category).order_by('-date_posted')
-        args={'posts':posts, 'post': sample_query}
+        args={'posts':posts, 'post': sample_query, 'category':category}
         return render(request, self.template_name, args)
-
 
 class UserPostListView(ListView):
     model = Post
@@ -152,17 +131,20 @@ class PostDetailView(DetailView):
         post = get_object_or_404(Post, pk=pk)
         return render(request, 'blog/post_detail.html', {'post': post})
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
+
     model = Post
     fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'classification']
-
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
+    template_name_suffix = '_update_form'
     fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'classification']
 
     def form_valid(self, form):
@@ -193,5 +175,5 @@ def reportuser(request):
     if from_email == "":
         return JsonResponse({"message": "Please login in order to report this article.", "login": "f"})
     else:
-        send_mail('Report User ', 'Hi! I would like to report the post with id'+str(report_id), from_email , ['no-reply@dapjak.com',])
+        send_mail('Report User ', 'Hi! I would like to report the post with id '+str(report_id)+" by "+str(from_email), 'admin@dapjak.com' , ['no-reply@dapjak.com',])
         return JsonResponse({"message": "Thank you for reporting. Our team will review your request and get back to you.", "login": "t"})

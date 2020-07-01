@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Contact Us
+{% endblock %}
+
 {% block body %}
-<div class="container top-aboutus">
+<div class="container my-5">
     <div class="row">
         <div class="col">
             <div class="card">
@@ -10,24 +14,58 @@
                 <div class="card-body">
                     <form method="post">
                       {% csrf_token %}
-                      {{ form.name }}
-                      {{ form.email }}
-
-                      {{ form.message }}
-                        <button type="submit" class="btn btn-primary text-right">Submit</button>
+                      {% if request.user.is_authenticated %}
+                        <input type="text" class="form-control mb-2" id="nameid" value="{{ request.user.first_name }}" placeholder="Name" required>
+                        <input type="email" class="form-control mb-2" id="emailid" value="{{ request.user.email }}" placeholder="Email" required>
+                        {% else%}
+                        <input type="text" class="form-control mb-2" id="nameid" placeholder="Name" required>
+                        <input type="email" class="form-control mb-2" id="emailid" placeholder="Email" required>
+                      {% endif %}
+                        <textarea class="form-control mb-2" rows="8" id="messageid" cols="80" placeholder="Message" required></textarea>
+                        <button type="submit" class="btn btn-primary text-right" id="submitQuery">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-4">
+        <div class="col-12 col-sm-4" id="emailAddress">
             <div class="card bg-light mb-3">
                 <div class="card-header bg-success text-white text-uppercase"><i class="fa fa-home"></i>Email Address</div>
                 <div class="card-body">
-                  <p>Email : flypfeed@gmail.com</p>
+                  <p>Email : admin@dapjak.com</p>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
+  <script type="text/javascript">
+
+$(document).ready(function(){
+  $("#submitQuery").click(function(){
+    var name = $("#nameid").val();
+    var email = $("#emailid").val();
+    var message = $("#messageid").val();
+
+
+
+    $.ajax({
+      url: {% url 'blog:contactnow' %},
+      dataType:  'json',
+      data: {
+        'name': name,
+        'email': email,
+        'message': message
+      },
+      success: function(result){
+        alert(result.message);
+          }
+        })
+  })
+
+
+
+})
+
+
+  </script>
 {% endblock %}

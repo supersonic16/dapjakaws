@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -37,6 +39,20 @@ def check_email(request):
         'is_taken' : User.objects.filter(email__iexact=email).exists()
     }
     return JsonResponse(result)
+
+#To show the followers of the user.
+
+# def followuser(request):
+#     loggedIn = request.user.id
+#     toFollow=request.GET.get('toFollow', None)
+#
+#     if loggedIn != None :
+#         loggedIn = User.objects.filter(id=loggedIn).first()
+#         toFollow = User.objects.filter(id=toFollow).first()
+#         UserFollowing.objects.create(loggedInUser=loggedIn, toFollowUser=toFollow)
+#         return JsonResponse({"hello": "hello"})
+#     else:
+#         return JsonResponse({"hello": "we done here"})
 
 class FollowView(DetailView):
 
@@ -73,7 +89,7 @@ class FollowView(DetailView):
                         'login' : 'f'
                         }
         return JsonResponse(result)
-    
+
 def changepassword(request):
     if request.method == 'POST':
         r_form = PasswordChangeForm(request.user, request.POST)
@@ -87,11 +103,13 @@ def changepassword(request):
 
     return render(request, 'users/changepassword.html', {'r_form': r_form})
 
+
 @login_required
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
 
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
@@ -104,6 +122,6 @@ def profile(request):
 
     context={
     'u_form': u_form,
-    'p_form': p_form
+    'p_form': p_form,
     }
     return render(request, 'users/profile.html', context)

@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+
+
+{% block title %}
+
+  {{ request.user.username | capfirst }}'s Profile
+
+{% endblock %}
+
 {% load crispy_forms_tags %}
 {% block body %}
 
@@ -16,10 +24,11 @@
           <button class="btn btn-info btn-block mb-3" type="submit">Update</button>
         </form>
       </div>
-
   </div>
   <div class="col-lg-3 col-md-2"></div>
   </div>
 </div>
+
+
 
 {% endblock %}

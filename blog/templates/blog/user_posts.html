@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block title %}
+  {{ user.first_name }} (@{{user.username}}) | Dapjak Posts
+{% endblock %}
+
 {% block body %}
 {% load static from static %}
 <body>
@@ -25,7 +30,6 @@
       </div>
       </div>
 
-
   <div class="container-fluid pt-2">
     <div class="row my-2">
     <div class="twPc-ArrangeSizeFit col-4">
@@ -50,16 +54,14 @@
 </div>
   </div>
   <!--  -->
-    <div class="container-fluid bg-white m-0 p-0">
     <!-- Jumbotron -->
     {% for post in posts %}
       <div class="container-fluid border p-0 mt-3  mb-2">
         <br>
-        <div class="row">
-          <div class="container" >
-            <h3 class="h3 px-3">{{ post.title }}</h3>
-            <h5 class="h5 text-muted px-3">{{ post.sub_title }}</h5>
-            <div class="row pl-4 mt-4 mb-3 pb-3" style="display: flex; flex-wrap: wrap; margin-left: 1px;">
+        <div class="row"  onclick="location.href='{{post.get_absolute_url}}';" style="cursor: pointer;">
+          <div class="container">
+
+            <div class="row pl-4 my-2 pb-3" style="display: flex; flex-wrap: wrap; margin-left: 1px;">
               <div class="pl-1" style="flex: 10%;">
               <img src="{{ post.author.profile.image.url }}" class="rounded-circle post-article-img">
               </div>
@@ -69,23 +71,43 @@
                   <small class="text-muted">{{ post.date_posted|date:"M d" }}</small>
                 </div>
             </div>
-            <img src="{{ post.cover_image.url }}" class="jumbotron2">
+
+            {% if post.cover_image %}
+            <img src="{{ post.cover_image.url }}" class="jumbotron3">
+            {% endif %}
           </div>
           <div class="container p-4 mx-2">
-          <p class="text-justify text-wrap user-read-more">{{ post.content|linebreaksbr }}</p>
-          <a href="{{post.get_absolute_url}}">Read More</a>
+          <h3 class="h3 px-3">{{ post.title }}</h3>
+          <h5 class="h5 text-muted px-3">{{ post.sub_title }}</h5>
           </div>
       </div>
+      <div class="dropdown flex-box pr-1">
+        <button style="background: white; border: none; font-size: 20px; color: #282828;" id="dropdownMenuButton" data-toggle="dropdown"><i class="fas fa-angle-down"></i></button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        {% if post.author ==  request.user %}
+          <ul class="m-0 p-0"><a href="{% url 'blog:post-update' pk=post.id slug=post.slug %}" class="dropdown-item">Update</a></ul>
+          <ul class="m-0 p-0"><a href="{% url 'blog:post-delete' pk=post.id slug=post.slug %}" class="dropdown-item">Delete</a></ul>
+        {% else %}
+          <ul class="m-0 p-0"><a href="" class="class_reportuser dropdown-item" id="{{ post.id }}">Report Article</a></ul>
+        {% endif %}
+        </div>
+      </div>
+
+
+
     </div>
       {% endfor %}
   </div>
 </div>
   <div class="col-lg-2"></div>
 </div>
-</div>
+
 
 {% block javascript %}
   <script type="text/javascript">
+
+
+
   $(".followButton").click(function(event){
     event.preventDefault();
     $.ajax({
@@ -102,6 +124,16 @@
       }
     })
   })
+
+//   $(document).ready(function () {
+//     $(document).on('mouseenter', '.divbutton', function () {
+//         $(this).find(":button").show();
+//     }).on('mouseleave', '.divbutton', function () {
+//         $(this).find(":button").hide();
+//     });
+//
+//
+// });
   </script>
 {% endblock %}
 

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-  New Story - DapJak
+  Update - {{ post.title }}
 {% endblock %}
 
 {% load crispy_forms_tags %}
@@ -14,7 +14,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-1"></div>
-    <div class="col-lg-10 col-md-10 col-sm-12 bg-white ml-n5">
+    <div class="col-lg-10 col-12 bg-white ml-n5">
   <form class="text-center border border-light p-5 pr-0 mr-n5 mt-n3" enctype= 'multipart/form-data' method="post">
     {% csrf_token %}
 <!-- Title -->
@@ -34,7 +34,7 @@
 <!-- cover_image -->
 
 {{ form.non_field_errors }}
-  <div class="fieldWrapper pr-n5 mr-n5">
+  <div class="fieldWrapper pr-n5 mr-n5 text-left mt-2 div_class">
 {{ form.cover_image.errors }}
   <label for="{{ form.cover_image.id_cover_image }}" ></label>
 {{ form.cover_image }}
@@ -67,14 +67,19 @@
     <button class="btn btn-primary btn-block" type="submit" id="publishbtn" style="width: auto">Publish</button>
   </form>
   </div>
+    <div class="col-lg-1"></div>
   </div>
 </div>
 {% block javascript %}
 <script type="text/javascript">
+$( ".div_class" ).contents().get(2).nodeValue = "Currently";
+
+
+
   $('#id_title').focus();
   tinymce.init({
       selector: '#id_content',
-  
+
       plugins: [
       'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
@@ -87,78 +92,13 @@
       image_caption: true,
       quickbars_insert_toolbar: false,
       content_css: 'http://localhost:8000/static/blog/content.css',
-    
 
-    //   images_upload_handler: function (blobInfo, success, failure) {
-    //   var xhr, formData;
-    //   xhr = new XMLHttpRequest();
-    //   xhr.withCredentials = false;
-    //   xhr.open('POST', 'http://localhost:8000/static/blog/postAcceptor.php');
-    //   xhr.onload = function () {
-    //     var json;
-
-    //     if (xhr.status != 200) {
-    //       failure('HTTP Error: ' + xhr.status);
-    //       return;
-    //     }
-    //     json = JSON.parse(xhr.responseText);
-
-    //     if (!json || typeof json.location != 'string') {
-    //       failure('Invalid JSON: ' + xhr.responseText);
-    //       return;
-    //     }
-    //     success(json.location);
-    //   };
-    //   formData = new FormData();
-    //   formData.append('file', blobInfo.blob(), blobInfo.filename());
-    //   xhr.send(formData);
-    // },
-
-
-
-
-
-
-      
      setup: function (editor) {
       editor.on('change', editor.save);
         }
 
     });
 
-  $(document).ready(function() {
-    $("#cover_image-clear_id").addClass("form-check-input");
-    // $("#publishbtn").click(function(){
-    //   $('#id_content').tinymce().save();
-    // })
-  // $(window).keydown(function(event){
-  //   if(event.keyCode == 13) {
-  //     event.keyCode=9;
-  //     return false;
-  //   }
-  // });
-});
-
-//   $(".custom-btn").click(function(){
-//     if ($("a").hasClass("active")){
-//         $('a').removeClass("active");
-//         $(this).addClass("active");
-//     }
-//     else{
-//         $(this).addClass("active");
-//     }
-//
-//     $.ajax({
-//         url:,
-//         dataType:  'json',
-//         data: {
-//
-//         },
-//         success: function(){
-//
-//         }
-//     })
-// })
 
 
 </script>

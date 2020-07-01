@@ -10,17 +10,19 @@ app_name='blog'
 urlpatterns=[
     url(r'^$',Indexview.as_view(), name='index'),
     url(r'^search/$', views.search, name='search'),
-    url(r'^subscribe/$', Nameview.as_view(), name='subscribe'),
     url(r'^aboutus/$',views.aboutus, name='aboutus'),
-    url(r'^contact/$',Contactview.as_view(), name='contact'),
-    path('reportuser/', views.reportuser, name='reportuser'),
+    url(r'^contact/$',views.contact, name='contact'),
+    url(r'^contactnow/$',views.contactnow, name='contactnow'),
     url(r'^shop/$',views.shop, name='shop'),
-
+    path('reportuser/', views.reportuser, name='reportuser'),
+    path('subscribe/', Subcribeview.as_view(), name='subscribe'),
     path('user/<str:username>/', UserPostListView.as_view(), name='user-posts'),
     path('post/<int:pk>/<slug:slug>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/<slug:slug>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('post/<int:pk>/<slug:slug>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
-    path('<str:category>/<int:pk>/<slug:slug>/', Categoryview.as_view(), name='category'),
-    path('<str:category>/', Categoryview.as_view(), name='category'),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('category/<str:category>/<int:pk>/<slug:slug>/', Categoryview.as_view(), name='category'),
+    path('category/<str:category>/', Categoryview.as_view(), name='category'),
+]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
