@@ -20,7 +20,7 @@
         </div>
         <div>
           <p class="post-detail-author p-0 m-0 ml-1">{{ posts.author.first_name }}</p>
-          <a class="post-detail-author p-0 m-0 ml-1" href="#" style="font-weight: 400;">@{{ posts.author }}</a>
+          <a class="post-detail-author p-0 m-0 ml-1" href='{% url "blog:user-posts" posts.author %}' style="font-weight: 400;">@{{ posts.author }}</a>
           <small class="text-muted">{{ posts.date_posted|date:"M d" }}</small>
         </div>
 
