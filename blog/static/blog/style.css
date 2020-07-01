@@ -4,6 +4,27 @@ html{
 button:focus{
   outline:0;
 }
+.img-responsive{
+  width: 100px;
+  height: 100px;
+}
+.div_class{
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 5px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+.select_change{
+  background-color: red;
+  float:left;
+}
 .fas:hover{
   color: #404040;
 }
@@ -47,12 +68,6 @@ body{
 .h5{
   display: flex;
   flex-wrap: wrap;
-}
-
-/* about us */
-.top-aboutus{
-  padding-top: 30px;
-  padding-bottom: 55px;
 }
 /* header */
 .scrollTop{
@@ -111,6 +126,10 @@ body{
   width: 65px;
 }
 
+.img-fluid{
+height: 250px;
+}
+
 .post-article-img{
   height: 55px;
   width: 55px;
@@ -126,6 +145,10 @@ body{
   width: 50px;
 }
 /* Create a new post*/
+.div_content{
+  width: 100%;
+}
+
 #id_title, #id_sub_title, #id_credit, #id_content{
   padding-left: 5px;
   width: 100%;
@@ -142,7 +165,7 @@ body{
   font-size: 25px;
 }
 #id_credit{
-  font-size: 18px;
+  font-size: 16px;
 }
 #id_content{
   font-size: 22px;
@@ -168,9 +191,7 @@ body{
 #id_title:focus, #id_sub_title:focus, #id_cover_image:focus, #id_credit:focus, #id_content:focus {
     outline: none;
 }
-#cover_image-clear_id{
-  float: left;
-}
+
 .custom-btn{
   margin-left: 20px;
   border-radius: 20px;
@@ -347,15 +368,6 @@ ul.twPc-Arrange {
     transition: color 0.15s ease-in-out 0s;
 }
 
-.user-read-more{
-  line-clamp: 5;
-  word-wrap:break-word;
-  overflow: hidden;
-  text-overflow: string;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-}
 /* */
 
 
@@ -396,6 +408,9 @@ ul.twPc-Arrange {
     .jumbotron1{
       height: 250px;
     }
+    #emailAddress{
+      margin-top: 30px;
+    }
 }
 @media (min-width:481px)
  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
@@ -430,6 +445,9 @@ ul.twPc-Arrange {
   }
   .jumbotron1{
     height: 400px;
+  }
+  #emailAddress{
+    margin-top: 0px;
   }
 
 }

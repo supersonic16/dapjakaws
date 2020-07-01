@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-{% load static from static %}
 <body>
 <div class="container" style="margin-top: -3px;">
   <div class="row">
@@ -76,7 +75,7 @@
             <img src="{{ post.cover_image.url }}" class="jumbotron3">
             {% endif %}
           </div>
-          <div class="container p-4 mx-2">
+          <div class="container pt-4 mx-2">
           <h3 class="h3 px-3">{{ post.title }}</h3>
           <h5 class="h5 text-muted px-3">{{ post.sub_title }}</h5>
           </div>
