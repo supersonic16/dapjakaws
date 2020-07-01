@@ -4,7 +4,7 @@ $(document).ready(function(){
   if ($(window).width() < 992){
     $("#navbrand").removeClass("pl-2");
     $("#myForm").addClass("w-100");
-    $("#sidebox").removeClass("pl-4");
+    $("#div_sidebox").removeClass("pl-4");
 
   }
   else if (searchText.value == false){
@@ -31,13 +31,13 @@ $(document).ready(function(){
         $("#mydiv").removeClass("input-group flex-box");
         $("#navbrand").removeClass("pl-2");
         $("#myForm").addClass("w-100");
-        $("#sidebox").removeClass("pl-4");
+        $("#div_div_sidebox").removeClass("pl-4");
       }
       else{
         $("#mydiv").addClass("input-group flex-box");
         $("#navbrand").addClass("pl-2");
         $("#myForm").removeClass("w-100");
-        $("#sidebox").addClass("pl-4");
+        $("#div_sidebox").addClass("pl-4");
       }
   });
 
