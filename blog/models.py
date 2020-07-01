@@ -33,7 +33,7 @@ class Post(models.Model):
     sub_title = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, null=True, blank=True)
     content = models.TextField(null=True)
-    cover_image = models.ImageField(upload_to= 'media', default='default.png', blank=True)
+    cover_image = models.ImageField(upload_to= 'media', default='white.png', blank=True)
     credit = models.CharField(max_length=100, blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, related_name="author_id", on_delete=models.CASCADE)
