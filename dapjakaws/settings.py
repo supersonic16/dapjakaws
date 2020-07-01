@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'mathfilters',
+    'tinymce',
     'webmaster_verification',
 ]
 
