@@ -1,9 +1,25 @@
+iframe{
+  max-width: 100% !important;
+}
 html{
   height: 100%;
 }
+
 button:focus{
   outline:0;
 }
+form:focus{
+}
+input.form-control:focus{
+
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+
+}
+
 .img-responsive{
   width: 100px;
   height: 100px;
@@ -34,6 +50,10 @@ blockquote {
 
 *{
   font-family: 'Montserrat', sans-serif;
+}
+
+.fontOpensans{
+  font-family: 'Open Sans', sans-serif;
 }
 
 a:hover{
@@ -144,10 +164,12 @@ height: 250px;
   height: 50px;
   width: 50px;
 }
-/* Create a new post*/
-.div_content{
-  width: 100%;
+.comment-img{
+  height: 45px;
+  width: 45px;
 }
+
+
 
 #id_title, #id_sub_title, #id_credit, #id_content{
   padding-left: 5px;
@@ -208,6 +230,9 @@ height: 250px;
   background-size: cover;
   background-position: center center;
   width: 100%;
+  width: calc(100% + 30px);
+  margin-left: calc(-15px);
+  margin-right: calc(-15px);
 }
 .jumbotron2{
   background-size: cover;
@@ -411,6 +436,9 @@ ul.twPc-Arrange {
     #emailAddress{
       margin-top: 30px;
     }
+    .comment-div{
+    padding-left: 40px;
+    }
 }
 @media (min-width:481px)
  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
@@ -449,6 +477,10 @@ ul.twPc-Arrange {
   #emailAddress{
     margin-top: 0px;
   }
+  .comment-div{
+    padding-left: 20px;
+  }
+
 
 }
 @media (min-width:768px)
