@@ -2,70 +2,76 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
 from PIL import Image
-
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from ckeditor_uploader.fields import RichTextUploadingField
+import sys
+from dapjakaws.utils import unique_slug_generator
+from django.db.models.signals import pre_save
 # Create your models here.
-class NameModel(models.Model):
-    name=models.CharField(max_length=100)
-    email=models.EmailField(max_length=100)
+class Subscribe(models.Model):
+    subscriber_name=models.CharField(max_length=100)
+    subscriber_email=models.EmailField(max_length=100)
 
-class ContactModel(models.Model):
-    name=models.CharField(max_length=100)
-    email=models.EmailField(max_length=100)
-    message=models.CharField(max_length=500)
+    def get_absolute_url(self):
+        return reverse('blog:subscribe')
 
-class EntertainmentModel(models.Model):
-    id=models.AutoField(primary_key=True)
-    heading=models.CharField(max_length=100)
-    content=models.TextField(max_length=500)
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    jumbotron=models.ImageField(upload_to= 'media', default="no image")
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img=Image.open(self.jumbotron.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.jumbotron.path)
+classify_into = (
+    ('none', 'None'),
+    ('news', 'News'),
+    ('entertainment', 'Entertainment'),
+    ('sports', 'Sports'),
+    ('tech', 'Tech'),
+    ('travel', 'Travel')
+)
 
 class Post(models.Model):
 
-    class hashtag(models.IntegerChoices):
-        news = 1
-        entertainment = 2
-        sports = 3
-        tech = 4
-        travel = 5
-        blog = 6
-
     id=models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
-    sub_title = models.CharField(max_length=100, null="True")
-    content = models.TextField()
-    cover_image = models.ImageField(upload_to= 'media', default="no image", null="True")
-    credit = models.CharField(max_length=100, default="no credits available", null="True")
-    image = models.ImageField(default='default.png', upload_to= 'media')
+    sub_title = models.CharField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
+    content = RichTextUploadingField(config_name='special')
+    cover_image = models.ImageField(upload_to= 'media', default='default.png', blank=True)
+    credit = models.CharField(max_length=100, blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    hashtag = models.IntegerField(choices=hashtag.choices, default = 1)
-    hideornot=models.BooleanField(default=False)
+    author = models.ForeignKey(User, related_name="author_id", on_delete=models.CASCADE)
+    classification=models.CharField(max_length=20, choices=classify_into, default='none')
 
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        img=Image.open(self.cover_image)
 
-        img=Image.open(self.image.path)
+        output = BytesIO()
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        img = img.resize((800,600), Image.ANTIALIAS)
+
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+        img.save(output, format='JPEG', quality=90)
+        output.seek(0)
+
+        self.cover_image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.cover_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+        super(Post, self).save(*args, **kwargs)
+
 
     def get_absolute_url(self):
-        return reverse('blog:post-detail', kwargs={'pk': self.pk})
+        return reverse('blog:post-detail', args=[self.id, self.slug])
+
+def slug_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(slug_generator, sender=Post)
+
+# class Post_classification(models.Model):
+#     id=models.AutoField(primary_key=True)
+#     classification=models.CharField(max_length=20, null=True)
+#     post_id=models.ForeignKey(Post, related_name="post_id", on_delete=models.CASCADE)
+#     author = models.ForeignKey(User, on_delete=models.CASCADE)

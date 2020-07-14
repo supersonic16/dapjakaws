@@ -1,43 +1,71 @@
 {% extends "base.html" %}
 
+  {% block title %}
+    {{ post.title }}
+  {% endblock %}
+
 {% block body %}
 
-  <div class="container">
+  <div class="container my-5">
     <div class="row">
-      <div class="col-lg-2 col-md-2"></div>
-      <div class="col-lg-8 col-md-8 col-sm-12 col-12 bg-white">
+      <div class="col-lg-2 col-md-1"></div>
+      <div class="col-lg-8 col-md-10 col-sm-12 bg-white">
 
 <!--  -->
-      <div class="twPc-div mt-5" style="border: none;">
-        <h1 class="p-3 mb-0 pb-0">{{ object.title }}</h1>
-        <h5 class="pl-3 pt-0 mt-0 text-muted">{{ object.sub_title }}</h5>
-        <div class="row pl-4 mt-4 mb-3 pb-3" style="display: flex; flex-wrap: wrap;">
+      <div class="twPc-div" style="border: none;">
+        <h1 class="p-3 mb-0 pb-0">{{ post.title }}</h1>
+        <h5 class="pl-3 pt-0 mt-0 text-muted">{{ post.sub_title }}</h5>
+        <div class="row pl-4 mt-4 mb-3 pb-3" style="display: flex; flex-wrap: wrap; margin-left: 1px;">
           <div class="pl-1" style="flex: 10%;">
-          <img src="{{ object.author.profile.image.url }}" class="rounded-circle post-article-img">
+          <img src="{{ post.author.profile.image.url }}" class="rounded-circle post-article-img">
           </div>
             <div class="pt-1 m-0" style="flex: 90%;">
-              <p class="post-detail-author p-0 m-0">{{ object.author.first_name }}</p>
-              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' object.author.username %}" style="font-weight: 400;">@{{ object.author }}</a>
-              <small class="text-muted">{{ object.date_posted|date:"M d" }}</small>
+              <p class="post-detail-author p-0 m-0">{{ post.author.first_name }}</p>
+              <a class="post-detail-author p-0 m-0" href="{% url 'blog:user-posts' post.author.username %}" style="font-weight: 400;">@{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"M d" }}</small>
             </div>
         </div>
-        <img src="{{ object.cover_image.url }}" class="jumbotron1">
+        {% if post.cover_image.url != '/media/media/default.jpg' %}
+          <img src="{{ post.cover_image.url }}" class="jumbotron1">
+        {% endif %}
         <div style="text-align: center; width: 100%;">
-        <small class="text-muted" >{{ object.credit }}</small>
+        <small class="text-muted" >{{ post.credit }}</small>
         </div>
       </div>
   <!--  -->
-    <div class="container-fluid bg-white m-0 p-3">
+    <div class="container-fluid bg-white m-0">
     <br>
-          <p class="text-justify text-wrap">{{ object.content }}</p>
+          <p class="text-justify text-wrap">{{ post.content|linebreaksbr }}</p>
     </div>
   </div>
 
-  <div class="col-lg-2 col-md-2"></div>
+  <div class="col-lg-2 col-md-1"></div>
 
 </div>
 </div>
 
+{% block javascript %}
+  <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://dapjak-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+{% endblock %}
 
 
 {% endblock %}

@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['SECRET_KEY']
+SECRET_KEY = '+mlh&%qqa^d7$uf+4&9dt4pe0fe(oc6mffco@r8brm+-dw1vns'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'mathfilters',
+    'ckeditor',
+    'ckeditor_uploader',
+    'webmaster_verification',
 ]
 
 
@@ -84,23 +87,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dapjakaws.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'new',
         'USER': 'my',
-        'PASSWORD': '',
+        'PASSWORD': config['DB_PASSWORD'],
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -117,10 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -131,15 +123,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -155,9 +140,53 @@ LOGIN_REDIRECT_URL = 'blog:index'
 
 LOGIN_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'email-smtp.ap-south-1.amazonaws.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = ""
+# EMAIL_HOST_PASSWORD = ""
+# DEFAULT_FROM_EMAIL = "no-reply@dapjak.com"
+
+# python3 -m smtpd -n -c DebuggingServer localhost:1026
+#
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1026
+
+
+####################################
+    ##  CKEDITOR CONFIGURATION ##
+####################################
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+# CKEDITOR_CONFIGS = {
+#     'default':
+#         {'toolbar': 'Custom',
+#          'toolbar_Custom': [
+#              ['Bold', 'Link', 'Unlink', 'Image'],
+#          ],
+#          },
+#     'special':
+#         {'toolbar': 'Special', 'height': 500,
+#          'toolbar_Special':
+#              [
+#                  ['Bold', 'Image'],
+#                  ['CodeSnippet'],
+#              ], 'extraPlugins': 'codesnippet',
+#          }
+# }
+#
+# CKEDITOR.editorConfig = function( config ) {
+# 	config.toolbar = [
+# 		{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+# 		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+# 		{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+# 		{ name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+# 		'/',
+# 		{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+# 		{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+# 		{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+# 	];
+# };
+###################################

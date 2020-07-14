@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+
+
+{% block title %}
+
+  {{ request.user.username | capfirst }}'s Profile
+
+{% endblock %}
+
 {% load crispy_forms_tags %}
 {% block body %}
 
@@ -7,27 +15,20 @@
     <div class="col-lg-3  col-md-2"></div>
     <div class="col-lg-6 col-md-8 col-sm-12 col-12 bg-white border border-custom">
       <div class="content-section">
-        <div class="media">
-            <img class="rounded-circle account-img mt-3 center" src="{{ user.profile.image.url }}">
-          </div>
-            <div class="media-body mt-2">
-              <h2 class="account-heading">{{ user.first_name }}</h2>
-              <h2 class="account-heading">{{ user.username }}</h2>
-                <p class="text-secondary">{{ user.email }}</p>
-            </div>
-
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           {{ u_form|crispy }}
           {{ p_form|crispy }}
+
+          <p class="m-0">Password <span><a href="{% url 'changepassword' %}"class="btn btn-outline-info mb-2" id="cpassword" style="float: right;">Change Password</a></span></p>
           <button class="btn btn-info btn-block mb-3" type="submit">Update</button>
         </form>
       </div>
-
   </div>
   <div class="col-lg-3 col-md-2"></div>
   </div>
 </div>
+
 
 
 {% endblock %}

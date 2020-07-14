@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
@@ -9,17 +10,34 @@ from django.template.loader import get_template
 from django.core.mail import BadHeaderError, send_mail
 from django.template import Context
 from django.db.models import Q
+from users.models import UserFollowing
+from django.contrib import messages
 from .forms import *
 from .models import *
 # Create your views here.
 class Indexview(TemplateView):
     template_name='blog/index.html'
     def get(self,request):
-        criterion1=Q(author = 1)
-        # criterion2=Q(hideornot=False)
-        post=Post.objects.all().order_by('-date_posted')
-        posts=Post.objects.filter(criterion1)
-        args={'posts':posts, 'post':post}
+        if request.user.is_authenticated:
+            current_user = request.user.id
+        else:
+            current_user = 1
+
+        toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
+        if toFollowList:
+            sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
+            for follow_id in toFollowList[1:]:
+                new = Post.objects.filter(author = follow_id.toFollowUser.id)
+                sample_query = new | sample_query
+
+            sample_query = sample_query.order_by('-date_posted')
+
+        else:
+            sample_query = Post.objects.none()
+
+        post = Post.objects.all().order_by('-date_posted')
+        posts = Post.objects.filter(author__is_superuser = 't').order_by('-date_posted')
+        args={'posts':posts, 'post':post, 'followed_blogs': sample_query}
         return render(request, self.template_name, args)
 
 def search(request):
@@ -38,88 +56,55 @@ def search(request):
 def aboutus(request):
     return render(request, 'blog/aboutus.html')
 
+def tech(request):
+    return render(request, 'blog/tech.html')
+
 def shop(request):
     return render(request, 'blog/shop.html')
 
-class Contactview(TemplateView):
-    template_name='blog/contact.html'
+def contact(request):
+    return render(request, 'blog/contact.html')
 
-    def get(self,request):
-        form=ContactForm()
-        return render(request, self.template_name, {'form':form})
+def contactnow(request):
+    name = request.GET.get('name', None)
+    email = request.GET.get('email', None)
+    message = request.GET.get('message', None)
 
-    def post(self,request):
-        form=ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            name=form.cleaned_data['name']
-            email=form.cleaned_data['email']
-            message=form.cleaned_data['message']
-            form=ContactForm()
+    send_mail('User Contact:'+str(name)+' '+str(email), str(message), 'admin@dapjak.com' , ['no-reply@dapjak.com',])
+    return JsonResponse({"message": "We have received your response. Our team will review your request and get back to you."})
 
-        args={'form':form, 'name':name, 'email':email, 'message':message}
+class Subcribeview(SuccessMessageMixin, CreateView):
+    model = Subscribe
+    success_message = "Thank you for subscribing to our newsletter."
+    fields = ['subscriber_name','subscriber_email']
+
+
+class Categoryview(TemplateView):
+
+    template_name='blog/category.html'
+    def get(self,request,category):
+
+        if request.user.is_authenticated:
+            current_user = request.user.id
+        else:
+            current_user = 1
+
+        toFollowList = UserFollowing.objects.filter(loggedInUser = current_user)
+        if toFollowList:
+            sample_query = Post.objects.filter(author = UserFollowing.objects.filter(loggedInUser = current_user).first().toFollowUser.id)
+            for follow_id in toFollowList[1:]:
+                new = Post.objects.filter(author = follow_id.toFollowUser.id)
+                sample_query = new | sample_query
+
+            sample_query = sample_query.filter(classification=category).order_by('-date_posted')
+
+        else:
+            sample_query = Post.objects.none()
+
+        posts = Post.objects.filter(author__is_superuser = 't')
+        posts = posts.filter(classification=category).order_by('-date_posted')
+        args={'posts':posts, 'post': sample_query, 'category':category}
         return render(request, self.template_name, args)
-
-class Nameview(TemplateView):
-    template_name='blog/subscribe.html'
-
-    def get(self,request):
-        form=NameForm()
-        return render(request, self.template_name, {'form':form})
-
-    def post(self,request):
-        form=NameForm(request.POST)
-        if form.is_valid():
-            form.save()
-            name=form.cleaned_data['name']
-            email=form.cleaned_data['email']
-            form=NameForm()
-
-        args={'form':form, 'name':name, 'email':email}
-
-        return render(request, self.template_name, args)
-
-# class Entertainmentview(TemplateView):
-#     def get(self, request):
-#         form = PostCreateForm()
-#         args={'form': form}
-#         return render(request, 'blog/new_post.html', args)
-#
-#     def post(self, request):
-#         if request.method == 'POST':
-#             form = PostCreateForm(request.POST, request.FILES)
-#
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, f'Your post has been recorded.')
-#                 return redirect('blog:index')
-#         else:
-#             form = PostCreateForm()
-#
-#         args={'form': form}
-#         return render(request, 'blog/new_post.html', args)
-class Entertainmentview(TemplateView):
-    template_name='blog/entertainment.html'
-    def get(self,request,id=14):
-        post=Post.objects.all().order_by('-date_posted')
-        posts=get_object_or_404(Post,id=id)
-        args={'posts':posts, 'post':post,'id':id}
-        return render(request, self.template_name, args)
-
-
-class NewsView(ListView):
-    model = Post
-    template_name='blog/news.html'
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
-#
-# class HomeView(ListView):
-#     model = Post
-#     template_name='blog/home.html'
-#     context_object_name='posts'
-#     ordering=['-date_posted']
-#     paginate_by = 2
-
 
 class UserPostListView(ListView):
     model = Post
@@ -128,26 +113,42 @@ class UserPostListView(ListView):
 
     def get(self, request, username="my123456"):
         user = get_object_or_404(User, username=username)
+        twt_user = User.objects.get(id=user.id)
+        followers = twt_user.followers.count()
+        following = twt_user.following.count()
         post = Post.objects.filter(author=user).order_by('-date_posted')
         count = Post.objects.filter(author=user).count()
-        args={'posts': post, 'user': user, 'count': count}
+
+        if UserFollowing.objects.filter(loggedInUser=request.user.id, toFollowUser=user.id).exists():
+            button_text = "Following"
+        else:
+            button_text = "Follow"
+
+        args={'posts': post, 'user': user, 'count': count, 'followers': followers, 'following': following, 'button_text': button_text}
         return render(request, self.template_name,args)
 
 class PostDetailView(DetailView):
     model = Post
 
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
+    def get(self,request,pk,slug):
+        post = get_object_or_404(Post, pk=pk)
+        return render(request, 'blog/post_detail.html', {'post': post})
 
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+
+    model = Post
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'classification']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'hashtag']
+    template_name_suffix = '_update_form'
+    fields = ['title', 'sub_title', 'cover_image', 'credit', 'content', 'classification']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -177,5 +178,5 @@ def reportuser(request):
     if from_email == "":
         return JsonResponse({"message": "Please login in order to report this article.", "login": "f"})
     else:
-        send_mail('Report User ', 'Hi! I would like to report the post with id'+str(report_id), from_email , ['iammattcaffery@gmail.com',])
+        send_mail('Report User ', 'Hi! I would like to report the post with id '+str(report_id)+" by "+str(from_email), 'admin@dapjak.com' , ['no-reply@dapjak.com',])
         return JsonResponse({"message": "Thank you for reporting. Our team will review your request and get back to you.", "login": "t"})

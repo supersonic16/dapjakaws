@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+  Update Story - DapJak
+{% endblock %}
+
+{% load crispy_forms_tags %}
+{% load static from static %}
+
+{% block head_extra %}
+  {{ form.media }}
+{% endblock %}
+
+
+{% block body %}
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10 col-md-10 col-sm-12 bg-white ml-n5">
+  <form class="text-center border border-light p-5 pr-0 mr-n5" enctype= 'multipart/form-data' method="post">
+    {% csrf_token %}
+<!-- Title -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper pr-n5 mr-n5">
+  {{ form.title.errors }}
+    <label for="{{ form.title.id_title }}"></label>
+  {{ form.title }}
+    </div>
+<!-- Sub Title -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper pr-n5 mr-n5">
+  {{ form.sub_title.errors }}
+    <label for="{{ form.sub_title.id_sub_title }}"></label>
+  {{ form.sub_title }}
+    </div>
+<!-- cover_image -->
+
+{{ form.non_field_errors }}
+  <div class="fieldWrapper pr-n5 mr-n5">
+{{ form.cover_image.errors }}
+  <label for="{{ form.cover_image.id_cover_image }}" ></label>
+{{ form.cover_image }}
+  </div>
+
+<!-- credit -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper pr-n5 mr-n5">
+  {{ form.credit.errors }}
+    <label for="{{ form.credit.id_credit }}"></label>
+  {{ form.credit }}
+    </div>
+<!-- Content -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper pr-n5 mr-n5 my-4" style="float:left;">
+  {{ form.content.errors }}
+    <label for="{{ form.content.id_content }}"></label>
+  {{ form.content }}
+    </div>
+
+    <!-- Classification -->
+  {{ form.non_field_errors }}
+    <div class="fieldWrapper pr-n5 mr-n5 my-4 py-4">
+  {{ form.classification.errors }}
+    <label for="{{ form.classification.id_classification }}">Classification</label>
+  {{ form.classification }}
+    </div>
+    <button class="btn btn-primary btn-block" type="submit" style="">Publish</button>
+  </form>
+  </div>
+  </div>
+</div>
+{% block javascript %}
+<script type="text/babel">
+  $('#id_title').focus();
+  $(document).ready(function() {
+    // $("#cover_image-clear_id").addClass("form-check-input");
+  // $(window).keydown(function(event){
+  //   if(event.keyCode == 13) {
+  //     event.keyCode=9;
+  //     return false;
+  //   }
+  // });
+});
+
+//   $(".custom-btn").click(function(){
+//     if ($("a").hasClass("active")){
+//         $('a').removeClass("active");
+//         $(this).addClass("active");
+//     }
+//     else{
+//         $(this).addClass("active");
+//     }
+//
+//     $.ajax({
+//         url:,
+//         dataType:  'json',
+//         data: {
+//
+//         },
+//         success: function(){
+//
+//         }
+//     })
+// })
+
+
+</script>
+{% endblock %}
+
+</body>
+{% endblock %}

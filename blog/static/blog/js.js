@@ -4,7 +4,7 @@ $(document).ready(function(){
   if ($(window).width() < 992){
     $("#navbrand").removeClass("pl-2");
     $("#myForm").addClass("w-100");
-
+    $("#sidebox").removeClass("pl-4");
   }
   else if (searchText.value == false){
     $("#searchText").hide();
@@ -25,26 +25,35 @@ $(document).ready(function(){
       $("#searchText").show();
     }
   });
-  $(window).click(function(){
-
-  })
   $(window).resize(function(){
       if ($(window).width() < 992){
         $("#mydiv").removeClass("input-group flex-box");
         $("#navbrand").removeClass("pl-2");
         $("#myForm").addClass("w-100");
+        $("#sidebox").removeClass("pl-4");
       }
       else{
         $("#mydiv").addClass("input-group flex-box");
         $("#navbrand").addClass("pl-2");
         $("#myForm").removeClass("w-100");
+        $("#sidebox").addClass("pl-4");
       }
   });
 
   $("#collapseButton").click(function(){
       $("#searchText").show();
-      $("nav").removeClass("fixed-top");
-      $("#topNav").addClass("scrollTop");
+      $("#topNav").toggleClass("fixed-top");
+      $("#topNav").toggleClass("scrollTop");
+      $(window).scrollTop(0);
   });
 
+$("#id_title").attr("placeholder", "Title");
+$("#id_sub_title").attr("placeholder", "Sub title");
+$("#id_credit").attr("placeholder", "Image credits");
+$("#id_content").attr("placeholder", "Write your story");
+
+
+$('.post_content').each(function(index, element) {
+  $clamp(element, { clamp: 5, useNativeClamp: false });
+});
 });
