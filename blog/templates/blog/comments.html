@@ -1,0 +1,176 @@
+{% load humanize %}
+{% load extras %}
+
+<div>
+  <!-- Post comments here -->
+<div class="container mt-4">
+      <h6>Comment</h6>
+      <form class="comment-form" action="/postComment/" method="post">
+        {% csrf_token %}
+
+          <div class="form-group">
+            <textarea id="txt" class="form-control form-control-sm" name="comment" placeholder="Enter your comments here" required></textarea>
+            <input type="hidden" name="postId" value="{{ post.id }}">
+            <input type="hidden" name="parentSno" value="">
+            <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          </div>
+      </form>
+    </div>
+
+  <!-- View comments here -->
+    <div class="container-fluid">
+    {% for comment in comments|slice:":5" %}
+
+
+        <div class="row mx-0 mb-2 px-0 pt-2 border">
+
+          <div class="col-1">
+          <img src="{{ comment.user.profile.image.url }}" class="rounded-circle comment-img">
+          </div>
+          <div class="col-11 comment-div">
+          <p class="mb-0"><b>{{comment.user.username}}</b><small class="text-muted pl-1" style="font-size: 13px;"> {{ comment.timestamp|naturaltime }}</small>
+          </p>
+          <p class="mb-0">{{comment.comment}}</p>
+
+<!-- Post reply -->
+          <div class="reply">
+
+                <button class="btn btn-primary btn-sm mb-2" style="font-size: 13px;" data-toggle="collapse" data-target="#reply{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">
+                  Reply
+                </button>
+                {% if comment.sno in replyDict %}
+                <button class="btn btn-primary btn-sm mb-2" style="font-size: 13px;" type="button" data-toggle="collapse" data-target="#view{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">
+                  View Replies ({{ replyCountDict|get_val:comment.sno  }})
+                </button>
+                {% endif %}
+
+              <div class="collapse" id="reply{{comment.sno}}">
+                <div class="pb-0 mb-0 pt-1">
+                  <label>Post Reply</label>
+                  <form action="/postComment/" method="post" onsubmit="return check(this)">
+                    {% csrf_token %}
+
+                      <div class="form-group">
+                        <textarea id="{{comment.sno}}" class="form-control form-control-sm" name="comment" placeholder="Enter your reply here" required></textarea>
+                        <input type="hidden" name="postId" value="{{ post.id }}">
+                        <input type="hidden" name="parentSno" value="{{comment.sno}}">
+                        <button type="submit" class="btn btn-primary btn-sm mt-2" style="font-size: 13px;">Submit</button>
+                      </div>
+                  </form>
+
+                </div>
+              </div>
+
+
+<!-- View replies -->
+              <div class="collapse" id="view{{comment.sno}}">
+                {% for reply in replyDict|get_val:comment.sno %}
+              <div class="row">
+                <div class="col-1">
+                <img src="{{ comment.user.profile.image.url }}" class="rounded-circle reply-img">
+                </div>
+                <div class="col-11 reply-div">
+                  {{reply}}
+                  </div>
+                </div>
+
+                  <br>
+                {% endfor %}
+              </div>
+          </div>
+        </div>
+
+        </div>
+
+    {% endfor %}
+    <div class="collapse" id="viewAll">
+      {% for comment in comments|slice:"6:" %}
+
+
+          <div class="row mx-0 mb-2 px-0 pt-2 border">
+
+            <div class="col-1">
+            <img src="{{ comment.user.profile.image.url }}" class="rounded-circle comment-img">
+            </div>
+            <div class="col-11 comment-div">
+            <p class="mb-0"><b>{{comment.user.username}}</b><small class="text-muted pl-1" style="font-size: 13px;"> {{ comment.timestamp|naturaltime }}</small>
+            </p>
+            <p class="mb-0">{{comment.comment}}</p>
+
+  <!-- Post reply -->
+            <div class="reply">
+
+                  <button class="btn btn-primary btn-sm mb-2" style="font-size: 13px;" data-toggle="collapse" data-target="#reply{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">
+                    Reply
+                  </button>
+                  {% if comment.sno in replyDict %}
+                  <button class="btn btn-primary btn-sm mb-2" style="font-size: 13px;" type="button" data-toggle="collapse" data-target="#view{{comment.sno}}" aria-expanded="false" aria-controls="collapseExample">
+                    View Replies ({{ replyCountDict|get_val:comment.sno|pluralize  }})
+                  </button>
+                  {% endif %}
+
+                <div class="collapse" id="reply{{comment.sno}}">
+                  <div class="pb-0 mb-0 pt-1">
+                    <label>Post Reply</label>
+                    <form action="/postComment/" method="post">
+                      {% csrf_token %}
+
+                        <div class="form-group">
+                          <textarea id="{{comment.sno}}" class="form-control form-control-sm" name="comment" placeholder="Enter your reply here" required></textarea>
+                          <input type="hidden" name="postId" value="{{ post.id }}">
+                          <input type="hidden" name="parentSno" value="{{comment.sno}}">
+                          <button type="submit" class="btn btn-primary btn-sm mt-2" style="font-size: 13px;">Submit</button>
+                        </div>
+                    </form>
+
+                  </div>
+                </div>
+
+
+  <!-- View replies -->
+                <div class="collapse" id="view{{comment.sno}}">
+                  {% for reply in replyDict|get_val:comment.sno %}
+                <div class="row">
+                  <div class="col-1">
+                  <img src="{{ comment.user.profile.image.url }}" class="rounded-circle reply-img">
+                  </div>
+                  <div class="col-11 reply-div">
+                    {{reply}}
+                    </div>
+                  </div>
+
+                    <br>
+                  {% endfor %}
+                </div>
+            </div>
+          </div>
+
+          </div>
+
+      {% endfor %}
+    </div>
+
+    <button type="button" class="btn btn-outline-dark mt-2" style="width: 100%; font-size: 14px;" data-toggle="collapse" data-target="#viewAll" aria-expanded="false" aria-controls="collapseExample">View all comments ({{totalcomments}}) </button>
+
+</div>
+
+{% block javascript %}
+<script type="text/javascript">
+
+$("textarea").focus(function() {
+    var row_id = $(this).attr("id");
+    $("#"+row_id).animate({
+        height: 150
+  }, 400);
+});
+
+$("textarea").blur(function() {
+    var row_id = $(this).attr("id");
+    $("#"+row_id).animate({
+        height: 48
+  }, 400);
+});
+
+
+</script>
+{% endblock %}

@@ -5,12 +5,31 @@ html{
   height: 100%;
 }
 
-button:focus{
-  outline:0;
+button.btn:focus{
+  outline:none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
 }
-form:focus{
+a.btn:focus{
+  outline:none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
 }
+
 input.form-control:focus{
+
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+
+}
+textarea.form-control:focus{
 
     outline:none !important;
     outline-width: 0 !important;
@@ -44,6 +63,7 @@ blockquote {
 .fas:hover{
   color: #404040;
 }
+
 .fa:hover{
   color: #404040;
 }
@@ -167,6 +187,10 @@ height: 250px;
 .comment-img{
   height: 45px;
   width: 45px;
+}
+.reply-img{
+  height: 35px;
+  width: 35px;
 }
 
 
@@ -436,8 +460,8 @@ ul.twPc-Arrange {
     #emailAddress{
       margin-top: 30px;
     }
-    .comment-div{
-    padding-left: 40px;
+  .comment-div{
+    padding-left: 30px;
     }
 }
 @media (min-width:481px)
@@ -459,7 +483,10 @@ ul.twPc-Arrange {
    h5{
      font-size: 1.2rem;
    }
-    }
+  .reply-div{
+    padding-left: 20px;
+  }
+}
 @media (min-width:641px){ /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
   .con{
     text-align: center;
@@ -478,7 +505,7 @@ ul.twPc-Arrange {
     margin-top: 0px;
   }
   .comment-div{
-    padding-left: 20px;
+    padding-left: 25px;
   }
 
 
@@ -521,7 +548,9 @@ ul.twPc-Arrange {
      .twPc-divUser{
      font-size: 16px;
      }
-
+     .reply-div{
+       padding-left: 10px;
+     }
     }
 @media (min-width:961px)
 { /* tablet, landscape iPad, lo-res laptops ands desktops */
@@ -570,6 +599,12 @@ ul.twPc-Arrange {
        }
    .latenet-addmargin{
      padding: 0px 0px 0px 20px;
+   }
+	 .comment-div{
+		 padding-left: 15px;
+	 }
+   .reply-div{
+     padding-left: 5px;
    }
   }
 @media (min-width:1281px)

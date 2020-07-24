@@ -1,9 +1,10 @@
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, RedirectView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
@@ -12,6 +13,7 @@ from django.template import Context
 from django.db.models import Q
 from users.models import UserFollowing
 from django.contrib import messages
+from blog.templatetags import extras
 from .forms import *
 from .models import *
 # Create your views here.
@@ -129,7 +131,38 @@ class PostDetailView(DetailView):
 
     def get(self,request,pk,slug):
         post = get_object_or_404(Post, pk=pk)
-        return render(request, 'blog/post_detail.html', {'post': post})
+        comments = BlogComment.objects.filter(post_id=pk, parent=None).order_by('-timestamp')
+        totalcomments = BlogComment.objects.filter(post_id=pk, parent=None).count()
+        replies = BlogComment.objects.filter(post_id=pk).exclude(parent=None).order_by('-timestamp')
+        replyDict = {}
+        replyCountDict = {}
+        for reply in replies:
+            if reply.parent.sno not in replyDict.keys():
+                replyDict[reply.parent.sno] = [reply]
+            else:
+                replyDict[reply.parent.sno].append(reply)
+        for key, value in replyDict.items():
+            replyCountDict[key] = len([item for item in value if item])
+
+        is_liked = False
+        if post.likes.filter(id=request.user.id).exists():
+            is_liked = True
+
+        is_disliked = False
+        if post.dislikes.filter(id=request.user.id).exists():
+            is_disliked = True
+
+
+        args={
+                'post': post, 'comments':comments,
+                'replyDict':replyDict,
+                'replyCountDict': replyCountDict,
+                'totalcomments': totalcomments,
+                'is_liked': is_liked,
+                'is_disliked': is_disliked,
+                }
+
+        return render(request, 'blog/post_detail.html', args)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -177,3 +210,157 @@ def reportuser(request):
     else:
         send_mail('Report User ', 'Hi! I would like to report the post with id '+str(report_id)+" by "+str(from_email), 'admin@dapjak.com' , ['no-reply@dapjak.com',])
         return JsonResponse({"message": "Thank you for reporting. Our team will review your request and get back to you.", "login": "t"})
+
+@login_required
+def postComment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        user = request.user
+        postId = request.POST.get('postId')
+        post = Post.objects.get(id=postId)
+        parentSno = request.POST.get('parentSno')
+
+        if parentSno == "":
+            comment = BlogComment(comment=comment, user=user, post=post)
+            comment.save()
+        else:
+            parent = BlogComment.objects.get(sno=parentSno)
+            comment = BlogComment(comment=comment, user=user, post=post, parent=parent)
+            comment.save()
+
+    return redirect(f"/post/{post.id}/{post.slug}")
+
+# Logic for Like
+
+class PostLike(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        post = get_object_or_404(Post, slug=slug)
+        url_ = post.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in post.dislikes.all():
+                post.dislikes.remove(user)
+                post.likes.add(user)
+            else:
+                if user in post.likes.all():
+                    post.likes.remove(user)
+                else:
+                    post.likes.add(user)
+        return url_
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+
+class PostLikeAPI(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, slug=None, pk=None, format=None):
+
+            # slug = self.kwargs.get("slug")
+        post = get_object_or_404(Post, slug=slug)
+        url_ = post.get_absolute_url()
+        user = self.request.user
+        updated = False
+        liked = False
+
+        if user.is_authenticated:
+            if user in post.dislikes.all():
+                post.dislikes.remove(user)
+                post.likes.add(user)
+                liked = True
+            else:
+                if user in post.likes.all():
+                    liked = False
+                    post.likes.remove(user)
+                else:
+                    liked = True
+                    post.likes.add(user)
+
+            totalLikes = post.likes.count()
+            updated = True
+
+        data = {
+            "updated": updated,
+            "liked": liked,
+            "totalLikes": totalLikes,
+        }
+        return Response(data)
+#
+
+# Logic for Dislike
+
+class PostDislike(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        post = get_object_or_404(Post, slug=slug)
+        url_ = post.get_absolute_url()
+        user = self.request.user
+
+        if user.is_authenticated:
+            if user in post.likes.all():
+                post.likes.remove(user)
+                post.dislikes.add(user)
+            else:
+                if user in post.dislikes.all():
+                    post.dislikes.remove(user)
+                else:
+                    post.dislikes.add(user)
+        return url_
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+
+class PostDislikeAPI(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, slug=None, pk=None, format=None):
+        post = get_object_or_404(Post, slug=slug)
+        url_ = post.get_absolute_url()
+        user = self.request.user
+        updated = False
+        disliked = False
+
+        if user.is_authenticated:
+            if user in post.likes.all():
+                post.likes.remove(user)
+                post.dislikes.add(user)
+                disliked = True
+            else:
+                if user in post.dislikes.all():
+                    disliked = False
+                    post.dislikes.remove(user)
+                else:
+                    disliked = True
+                    post.dislikes.add(user)
+
+            totalDislikes = post.dislikes.count()
+            updated = True
+
+        data = {
+            "updated": updated,
+            "disliked": disliked,
+            "totalDislikes": totalDislikes
+        }
+        return Response(data)
+#
