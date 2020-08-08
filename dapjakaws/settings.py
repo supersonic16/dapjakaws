@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mathfilters',
     'tinymce',
-    'webmaster_verification'
+    'webmaster_verification',
     'social_django',
 ]
 
