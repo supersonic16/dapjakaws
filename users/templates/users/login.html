@@ -7,21 +7,36 @@
 
 {% block body %}
 
-<body id="bg">
+<body id="bg" style="background-image: url('https://dapjakbucket.s3.ap-south-1.amazonaws.com/bg-image.jpg');">
 
 <div class="container p-4">
   <div class="row">
     <div class="col-lg-3 col-md-2"></div>
+  
     <div class="col-lg-6 col-md-8 col-sm-12 col-12 bg-white">
-  <form class="text-center border border-light p-5" action="" method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-info btn-block" type="submit">Sign in</button>
-  <p class="m-1">No Account?<a class="text-primary" href="{% url 'register' %}"> Sign Up</a></p>
-  <a class="text-primary" href="{% url 'password_reset' %}">Forgot Password ?</a>
+      <center class="pt-5"><h2>DAPJAK</h2></center> 
+      <form class="text-center border border-light p-5" action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-info btn-block" type="submit">Sign in</button>
+      <p class="m-1">No Account?<a class="text-primary" href="{% url 'register' %}"> Sign Up</a></p>
+      <a class="text-primary" href="{% url 'password_reset' %}">Forgot Password ?</a>
 
-  </form>
-  </div>
+     <p class="mt-2">or</p>
+
+      <center class="mt-3 pl-2 row">
+        <button class="loginBtn loginBtn--facebook" style="float: left;">
+          <a class="text-white" href="{% url 'social:begin' 'facebook' %}">Login with Facebook
+          </a>
+        </button>
+
+        <button class="loginBtn loginBtn--google" style="float: right;">
+          <a class="text-white" href="{% url 'social:begin' 'google-oauth2' %}">Login with Google
+          </a>
+        </button>
+      </center>
+      </form>
+    </div>
   <div class="col-lg-3 col-md-2"></div>
   </div>
 </div>

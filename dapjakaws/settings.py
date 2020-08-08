@@ -49,8 +49,10 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mathfilters',
     'tinymce',
-    'webmaster_verification',
+    'webmaster_verification'
+    'social_django',
 ]
+
 
 
 MIDDLEWARE = [
@@ -80,6 +82,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'social_django.context_processors.backends',  # add this
+                'social_django.context_processors.login_redirect',  # add this
+
             ],
         },
     },
@@ -121,6 +126,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#add this
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social.backends.email.EmailAuth',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -173,3 +185,34 @@ DEFAULT_FROM_EMAIL = "no-reply@dapjak.com"
 WEBMASTER_VERIFICATION = {
     'google': 'google21cd917c10657000',
 }
+
+SOCIAL_AUTH_FACEBOOK_KEY = config['FB_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = config['FB_PASS'] 
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link']  # add this
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
+    'fields': 'id, name, email, picture.type(large), link'
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('link', 'profile_url'),
+]
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config['GOOGLE_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config['GOOGLE_PASS']
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)

@@ -40,20 +40,6 @@ def check_email(request):
     }
     return JsonResponse(result)
 
-#To show the followers of the user.
-
-# def followuser(request):
-#     loggedIn = request.user.id
-#     toFollow=request.GET.get('toFollow', None)
-#
-#     if loggedIn != None :
-#         loggedIn = User.objects.filter(id=loggedIn).first()
-#         toFollow = User.objects.filter(id=toFollow).first()
-#         UserFollowing.objects.create(loggedInUser=loggedIn, toFollowUser=toFollow)
-#         return JsonResponse({"hello": "hello"})
-#     else:
-#         return JsonResponse({"hello": "we done here"})
-
 class FollowView(DetailView):
 
     def get(self, request, id):

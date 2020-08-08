@@ -41,6 +41,7 @@ urlpatterns = [
     path('check-email/', user_views.check_email, name="check_email"),
     path('followuser/<int:id>/', user_views.FollowView.as_view(), name="followuser"),
     path('', include('blog.urls')),
+    path('social-auth/', include('social_django.urls', namespace="social")),
     path('changepassword/', user_views.changepassword, name="changepassword"),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'', include('webmaster_verification.urls'))
