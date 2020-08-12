@@ -193,13 +193,12 @@ SOCIAL_AUTH_FACEBOOK_KEY = config['FB_KEY']
 SOCIAL_AUTH_FACEBOOK_SECRET = config['FB_PASS'] 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']  # add this
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
-    'fields': 'id, name, email, picture.type(large), link'
+    'fields': 'id, name, email, picture.type(large)'
 }
 SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
     ('name', 'name'),
     ('email', 'email'),
     ('picture', 'picture'),
-    ('link', 'profile_url'),
 ]
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
